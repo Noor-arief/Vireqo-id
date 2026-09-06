@@ -142,16 +142,20 @@ header.scrolled{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);box-
 .svc{position:relative}
 .svc-popular{position:absolute;top:-12px;right:22px;background:var(--grad-amber);color:#fff;font-size:11px;font-weight:800;letter-spacing:.3px;padding:5px 12px;border-radius:999px;box-shadow:0 4px 10px rgba(245,166,35,.35)}
 .svc-topproduct{position:absolute;top:-12px;left:22px;background:var(--grad-navy);color:#fff;font-size:11px;font-weight:800;letter-spacing:.3px;padding:5px 12px;border-radius:999px;box-shadow:0 4px 10px rgba(30,35,56,.35);display:inline-flex;align-items:center;gap:4px}
-.svc.svc-expanded{grid-column:1 / -1}
 .csd-trigger{margin-top:12px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--white);border:1.5px dashed var(--teal-m);color:var(--teal-dark);font-family:inherit;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:12px;cursor:pointer;transition:all .18s}
 .csd-trigger:hover{border-style:solid;background:var(--teal-l)}
 .csd-trigger svg{width:16px;height:16px;transition:transform .2s ease}
-.csd-trigger.open svg{transform:rotate(180deg)}
-.csd-panel{margin-top:20px;padding-top:20px;border-top:1px dashed var(--border)}
-.csd-panel[hidden]{display:none}
 .csd-panel-head{margin-bottom:18px}
 .csd-panel-head h4{font-size:18px;font-weight:800;color:var(--navy);margin:0 0 6px}
 .csd-panel-head p{font-size:13.5px;color:var(--t2);margin:0}
+.csd-modal-overlay{position:fixed;inset:0;background:rgba(15,20,30,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:999}
+.csd-modal-overlay[hidden]{display:none}
+.csd-modal{background:var(--white);border-radius:var(--r-lg);max-width:720px;width:100%;max-height:88vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.csd-modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);transition:all .15s;padding:0}
+.csd-modal-close:hover{background:var(--bg2);color:var(--navy)}
+.csd-modal-close svg{width:16px;height:16px}
+body.no-scroll{overflow:hidden}
+@media(max-width:640px){ .csd-modal{padding:22px;max-height:92vh;border-radius:16px} .csd-modal-close{top:12px;right:12px} }
 .svc{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:30px;box-shadow:var(--sh-sm);transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
 .svc:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
 .svc-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
@@ -436,57 +440,11 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg><span data-i18n="t108">Tanya jawab langsung dengan praktisi CS</span></li>
 </ul>
 <a class="wa-link svc-cta" data-msg="Halo Vireqo, saya ingin konsultasi mengenai Customer Service untuk bisnis saya." data-msg-key="m6" href="https://wa.me/6281912345611?text=Halo%20Vireqo%2C%20saya%20ingin%20konsultasi%20mengenai%20Customer%20Service%20untuk%20bisnis%20saya." rel="noopener" target="_blank"><span data-i18n="t111">Konsultasikan CS Bisnis Anda</span> <svg fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
-<button aria-controls="csdPanel" aria-expanded="false" class="csd-trigger" id="csdTriggerBtn" type="button">
+<button aria-controls="csdModalOverlay" aria-expanded="false" aria-haspopup="dialog" class="csd-trigger" id="csdTriggerBtn" type="button">
 <span data-i18n="t136">Coba Demo Interaktif</span>
-<svg fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"></path></svg>
 </button>
-<div class="csd-panel" hidden id="csdPanel">
-<div class="csd-panel-head">
-<h4><span data-i18n="t122">Lihat Bedanya CS Sembarangan vs CS Terlatih</span></h4>
-<p><span data-i18n="t123">Ini contoh kecil materi yang Anda dapat di sesi Konsultasi Customer Service. Coba geser, jawab, dan cek skor CS bisnis Anda sendiri.</span></p>
-</div>
 
-<div class="csd-toggle">
-<button class="active bad" data-mode="bad" id="csdBtnBad" type="button"><span data-i18n="t124">CS Sembarangan</span></button>
-<button class="good" data-mode="good" id="csdBtnGood" type="button"><span data-i18n="t125">CS Terlatih</span></button>
-</div>
-<div class="csd-card bad" id="csdCard">
-<span class="csd-tag" id="csdTag"><span data-i18n="t124">CS Sembarangan</span></span>
-<div class="csd-bubble cust"><span data-i18n="t126">Kak, barang saya belum sampai udah 5 hari. Saya kecewa banget</span></div>
-<div class="csd-bubble cs" id="csdReply"><span data-i18n="t127">Coba dicek dulu resinya kak, kadang emang suka lama.</span></div>
-<div class="csd-verdict" id="csdVerdict"><span data-i18n="t128">Kenapa ini berisiko: Tidak ada permintaan maaf, terkesan lempar tanggung jawab, dan pelanggan tidak tahu langkah selanjutnya.</span></div>
-</div>
-
-<div class="csd-grid">
-<div class="csd-card good" style="overflow:visible">
-<span class="csd-tag"><span data-i18n="t131">Uji Insting CS Kamu</span></span>
-<div class="csd-quiz-progress" id="csdQuizProgress"></div>
-<div class="csd-quiz-q" id="csdQuizQ"></div>
-<div id="csdQuizOpts"></div>
-<div class="csd-quiz-feedback" id="csdQuizFeedback"></div>
-<button class="csd-quiz-next" id="csdQuizNext" type="button">Lanjut →</button>
-<div class="csd-quiz-result" id="csdQuizResult">
-<div class="csd-score" id="csdQuizScore">0/3</div>
-<p id="csdQuizResultMsg" style="color:var(--t2);font-size:13.5px;margin-top:6px"></p>
-</div>
-</div>
-
-<div class="csd-card good" style="overflow:visible">
-<span class="csd-tag"><span data-i18n="t132">Sehat Mana CS Bisnismu?</span></span>
-<p style="font-size:13px;color:var(--t2);margin:-4px 0 14px"><span data-i18n="t133">Centang praktik yang sudah Anda jalankan sekarang.</span></p>
-<div class="csd-check" id="csdChecklist"></div>
-<div class="csd-check-result">
-<div class="csd-cr-score" id="csdCrScore">0 / 6</div>
-<div class="csd-cr-msg" id="csdCrMsg"></div>
-</div>
-</div>
-</div>
-
-<div class="csd-mini-cta">
-<p><span data-i18n="t134">Ingin pembahasan lebih lengkap seperti ini untuk bisnis Anda?</span></p>
-<a class="wa-link btn btn-primary" data-msg="Halo Vireqo, saya ingin konsultasi mengenai Customer Service untuk bisnis saya." data-msg-key="m6" href="https://wa.me/6281912345611?text=Halo%20Vireqo%2C%20saya%20ingin%20konsultasi%20mengenai%20Customer%20Service%20untuk%20bisnis%20saya." rel="noopener" target="_blank"><span data-i18n="t135">Konsultasi Materi CS Lengkap</span></a>
-</div>
-</div>
 </div>
 <div class="svc">
 <div class="svc-popular"><span data-i18n="t120">Populer</span></div>
@@ -614,6 +572,58 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 </div>
 </div>
 </footer>
+<div class="csd-modal-overlay" hidden id="csdModalOverlay">
+<div aria-labelledby="csdModalTitle" aria-modal="true" class="csd-modal" role="dialog">
+<button aria-label="Tutup" class="csd-modal-close" id="csdModalClose" type="button"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.5" viewbox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+<div class="csd-panel" id="csdPanel">
+<div class="csd-panel-head">
+<h4 id="csdModalTitle"><span data-i18n="t122">Lihat Bedanya CS Sembarangan vs CS Terlatih</span></h4>
+<p><span data-i18n="t123">Ini contoh kecil materi yang Anda dapat di sesi Konsultasi Customer Service. Coba geser, jawab, dan cek skor CS bisnis Anda sendiri.</span></p>
+</div>
+
+<div class="csd-toggle">
+<button class="active bad" data-mode="bad" id="csdBtnBad" type="button"><span data-i18n="t124">CS Sembarangan</span></button>
+<button class="good" data-mode="good" id="csdBtnGood" type="button"><span data-i18n="t125">CS Terlatih</span></button>
+</div>
+<div class="csd-card bad" id="csdCard">
+<span class="csd-tag" id="csdTag"><span data-i18n="t124">CS Sembarangan</span></span>
+<div class="csd-bubble cust"><span data-i18n="t126">Kak, barang saya belum sampai udah 5 hari. Saya kecewa banget</span></div>
+<div class="csd-bubble cs" id="csdReply"><span data-i18n="t127">Coba dicek dulu resinya kak, kadang emang suka lama.</span></div>
+<div class="csd-verdict" id="csdVerdict"><span data-i18n="t128">Kenapa ini berisiko: Tidak ada permintaan maaf, terkesan lempar tanggung jawab, dan pelanggan tidak tahu langkah selanjutnya.</span></div>
+</div>
+
+<div class="csd-grid">
+<div class="csd-card good" style="overflow:visible">
+<span class="csd-tag"><span data-i18n="t131">Uji Insting CS Kamu</span></span>
+<div class="csd-quiz-progress" id="csdQuizProgress"></div>
+<div class="csd-quiz-q" id="csdQuizQ"></div>
+<div id="csdQuizOpts"></div>
+<div class="csd-quiz-feedback" id="csdQuizFeedback"></div>
+<button class="csd-quiz-next" id="csdQuizNext" type="button">Lanjut →</button>
+<div class="csd-quiz-result" id="csdQuizResult">
+<div class="csd-score" id="csdQuizScore">0/3</div>
+<p id="csdQuizResultMsg" style="color:var(--t2);font-size:13.5px;margin-top:6px"></p>
+</div>
+</div>
+
+<div class="csd-card good" style="overflow:visible">
+<span class="csd-tag"><span data-i18n="t132">Sehat Mana CS Bisnismu?</span></span>
+<p style="font-size:13px;color:var(--t2);margin:-4px 0 14px"><span data-i18n="t133">Centang praktik yang sudah Anda jalankan sekarang.</span></p>
+<div class="csd-check" id="csdChecklist"></div>
+<div class="csd-check-result">
+<div class="csd-cr-score" id="csdCrScore">0 / 6</div>
+<div class="csd-cr-msg" id="csdCrMsg"></div>
+</div>
+</div>
+</div>
+
+<div class="csd-mini-cta">
+<p><span data-i18n="t134">Ingin pembahasan lebih lengkap seperti ini untuk bisnis Anda?</span></p>
+<a class="wa-link btn btn-primary" data-msg="Halo Vireqo, saya ingin konsultasi mengenai Customer Service untuk bisnis saya." data-msg-key="m6" href="https://wa.me/6281912345611?text=Halo%20Vireqo%2C%20saya%20ingin%20konsultasi%20mengenai%20Customer%20Service%20untuk%20bisnis%20saya." rel="noopener" target="_blank"><span data-i18n="t135">Konsultasi Materi CS Lengkap</span></a>
+</div>
+</div>
+</div>
+</div>
 <script>
 
   const header = document.getElementById('siteHeader');
@@ -641,16 +651,32 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
   // --- CS Consultant interactive demo ---
   (function(){
     var csdTriggerBtn = document.getElementById('csdTriggerBtn');
-    var csdPanel = document.getElementById('csdPanel');
-    var svcKonsultasiCS = document.getElementById('svcKonsultasiCS');
-    if(csdTriggerBtn && csdPanel){
-      csdTriggerBtn.addEventListener('click', function(){
-        var willOpen = csdPanel.hidden;
-        csdPanel.hidden = !willOpen;
-        csdTriggerBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        csdTriggerBtn.classList.toggle('open', willOpen);
-        if(svcKonsultasiCS) svcKonsultasiCS.classList.toggle('svc-expanded', willOpen);
-        if(willOpen) csdPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    var csdModalOverlay = document.getElementById('csdModalOverlay');
+    var csdModalClose = document.getElementById('csdModalClose');
+    var csdLastFocused = null;
+    function csdOpenModal(){
+      if(!csdModalOverlay) return;
+      csdLastFocused = document.activeElement;
+      csdModalOverlay.hidden = false;
+      document.body.classList.add('no-scroll');
+      csdTriggerBtn.setAttribute('aria-expanded', 'true');
+      if(csdModalClose) csdModalClose.focus();
+    }
+    function csdCloseModal(){
+      if(!csdModalOverlay || csdModalOverlay.hidden) return;
+      csdModalOverlay.hidden = true;
+      document.body.classList.remove('no-scroll');
+      csdTriggerBtn.setAttribute('aria-expanded', 'false');
+      if(csdLastFocused && csdLastFocused.focus) csdLastFocused.focus();
+    }
+    if(csdTriggerBtn && csdModalOverlay){
+      csdTriggerBtn.addEventListener('click', csdOpenModal);
+      if(csdModalClose) csdModalClose.addEventListener('click', csdCloseModal);
+      csdModalOverlay.addEventListener('click', function(e){
+        if(e.target === csdModalOverlay) csdCloseModal();
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') csdCloseModal();
       });
     }
 
