@@ -310,7 +310,10 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 .bima-head-title{font-family:'Manrope','Inter',sans-serif;font-size:16px;font-weight:800;line-height:1.2}
 .bima-head-sub{font-size:11.5px;opacity:.86;margin-top:3px}
 .bima-online{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:10.5px;font-weight:700;opacity:.92}
-.bima-online-dot{width:6px;height:6px;border-radius:50%;background:#B9F6E8;box-shadow:0 0 0 3px rgba(185,246,232,.16)}
+.bima-online-dot{width:6px;height:6px;border-radius:50%;background:#25D366;box-shadow:0 0 0 3px rgba(37,211,102,.18)}
+.bima-online-dot.is-online{background:#25D366;box-shadow:0 0 0 3px rgba(37,211,102,.18);animation:bimaStatusPulse 1.35s ease-in-out infinite}
+.bima-online-dot.is-offline{background:#E5484D;box-shadow:0 0 0 3px rgba(229,72,77,.18);animation:none}
+@keyframes bimaStatusPulse{0%,100%{opacity:1;box-shadow:0 0 0 3px rgba(37,211,102,.18)}50%{opacity:.42;box-shadow:0 0 0 6px rgba(37,211,102,.08)}}
 .bima-close{width:32px;height:32px;border:0;border-radius:9px;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;line-height:1;flex-shrink:0}
 .bima-close:hover{background:rgba(255,255,255,.20)}
 .bima-body{padding:16px;background:var(--bg);overflow:auto;min-height:0}
@@ -349,6 +352,25 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 @media(max-width:600px){.bima-fab{right:16px;bottom:16px;padding:8px 14px 8px 9px}.bima-fab-avatar{width:32px;height:32px}.bima-panel{right:16px;bottom:72px;width:calc(100vw - 32px);max-height:calc(100vh - 92px);border-radius:18px}.bima-head{padding:12px 14px}.bima-avatar{width:44px;height:44px}.bima-body{padding:14px}.bima-services{grid-template-columns:1fr 1fr;gap:7px}.bima-service{font-size:11px;padding:9px}.bima-input-wrap{padding:10px}}
 @media(max-width:390px){.bima-services{grid-template-columns:1fr}.bima-service{min-height:42px}.bima-fab #bimaFabLabel{display:none}.bima-fab{padding:7px}}
 
+
+
+/* --- BIMA live chat + name flow --- */
+.bima-messages{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.bima-msg{max-width:88%;padding:11px 13px;border-radius:14px;font-size:13px;line-height:1.58;white-space:pre-wrap;word-break:break-word}
+.bima-msg.user{align-self:flex-end;background:var(--teal);color:#fff;border-bottom-right-radius:5px}
+.bima-msg.assistant{align-self:flex-start;background:#fff;color:var(--t2);border:1px solid var(--border);border-bottom-left-radius:5px;box-shadow:var(--sh-sm)}
+.bima-msg.system{align-self:center;max-width:100%;padding:8px 11px;background:var(--teal-l);color:var(--teal-dark);font-size:11.5px;text-align:center}
+.bima-msg.loading{color:var(--t3);font-style:italic}
+#bimaDiscovery{display:block}
+.bima-panel.chat-active .bima-bubble{display:none}
+.bima-panel.chat-active #bimaDiscovery{display:none}
+.bima-panel.chat-active .bima-context{display:none!important}
+.bima-panel.chat-active .bima-messages{margin-top:0;padding-top:22px}
+.bima-panel.chat-closed .bima-input{background:var(--bg2);color:var(--t3)}
+.bima-input:not(:disabled){background:#fff;color:var(--t1)}
+.bima-send:not(:disabled){background:var(--teal);color:#fff;cursor:pointer}
+.bima-send:not(:disabled):hover{background:var(--teal-dark)}
+.bima-send:disabled{opacity:.58}
 
 /* =========================================================
    VIREQO V4 — VISUAL POLISH ONLY
@@ -492,7 +514,7 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   .footer-grid{gap:24px}
 }
 </style>
-<!-- SEO: ganti https://vireqo.id/ di bawah dengan domain resmi Vireqo saat sudah live --><link href="https://vireqo.id/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Vireqo" property="og:site_name"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" property="og:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." property="og:description"/><meta content="https://vireqo.id/" property="og:url"/><meta content="id_ID" property="og:locale"/><meta content="en_US" property="og:locale:alternate"/><meta content="https://vireqo.id/og-image.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" name="twitter:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." name="twitter:description"/><meta content="https://vireqo.id/og-image.png" name="twitter:image"/><meta content="#128C7E" name="theme-color"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vireqo", "description": "Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard & training customer service, hingga penyediaan SDM CS. Konsultasi gratis.", "areaServed": "ID", "telephone": "+6281912345611", "url": "https://vireqo.id/", "sameAs": ["https://wa.me/6281912345611"], "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website dan Landing Page"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Dashboard Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Training Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Penyediaan SDM Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi SEO"}}]}</script><meta content="index, follow" name="robots"/><meta content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'" http-equiv="Content-Security-Policy"/><meta content="strict-origin-when-cross-origin" name="referrer"/>
+<!-- SEO: ganti https://vireqo.id/ di bawah dengan domain resmi Vireqo saat sudah live --><link href="https://vireqo.id/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Vireqo" property="og:site_name"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" property="og:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." property="og:description"/><meta content="https://vireqo.id/" property="og:url"/><meta content="id_ID" property="og:locale"/><meta content="en_US" property="og:locale:alternate"/><meta content="https://vireqo.id/og-image.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" name="twitter:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." name="twitter:description"/><meta content="https://vireqo.id/og-image.png" name="twitter:image"/><meta content="#128C7E" name="theme-color"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vireqo", "description": "Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard & training customer service, hingga penyediaan SDM CS. Konsultasi gratis.", "areaServed": "ID", "telephone": "+6281912345611", "url": "https://vireqo.id/", "sameAs": ["https://wa.me/6281912345611"], "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website dan Landing Page"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Dashboard Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Training Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Penyediaan SDM Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi SEO"}}]}</script><meta content="index, follow" name="robots"/><meta content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' http://127.0.0.1:8000 http://localhost:8000; base-uri 'self'; form-action 'self'; object-src 'none'" http-equiv="Content-Security-Policy"/><meta content="strict-origin-when-cross-origin" name="referrer"/>
 <style id="vireqo-v4-hero-refinement">
 /* V4 hero proportion refinement — visual-only, services and functionality untouched */
 @media (min-width: 1025px) {
@@ -1213,7 +1235,7 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
     <div class="bima-head-copy">
       <div class="bima-head-title" id="bimaTitle">BIMA</div>
       <div class="bima-head-sub" id="bimaSubtitle">Vireqo AI Client Assistant</div>
-      <div class="bima-online"><span class="bima-online-dot"></span><span id="bimaStatusLabel">Siap membantu konsultasi</span></div>
+      <div class="bima-online"><span class="bima-online-dot is-online" id="bimaStatusDot"></span><span id="bimaStatusLabel">Siap membantu konsultasi</span></div>
     </div>
     <button class="bima-close" id="bimaClose" type="button" aria-label="Tutup Ask BIMA">×</button>
   </div>
@@ -1223,7 +1245,9 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
       <span id="bimaGreeting">Ceritakan kebutuhan bisnis Anda. Saya akan membantu menentukan layanan Vireqo yang paling sesuai.</span>
     </div>
     <div class="bima-context" id="bimaContext"></div>
+    <div class="bima-messages" id="bimaMessages" aria-live="polite"></div>
 
+    <div id="bimaDiscovery">
     <div class="bima-section-label" id="bimaPopularLabel">Rekomendasi untuk Anda</div>
     <button class="bima-popular" type="button" data-bima-service="dashboard">
       <span class="bima-popular-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 15v2M12 11v6M17 8v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
@@ -1241,6 +1265,7 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
     </div>
 
     <div class="bima-coming"><span class="bima-coming-dot"></span><span id="bimaComing">Chat AI BIMA sedang disiapkan. Semua CTA konsultasi di Vireqo sekarang masuk melalui BIMA terlebih dahulu.</span></div>
+    </div>
 
     <div class="bima-handover" id="bimaHandover">
       <div class="bima-handover-title" id="bimaHandoverTitle">Siap lanjut dengan tim Vireqo?</div>
@@ -1249,8 +1274,8 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
     </div>
   </div>
   <div class="bima-input-wrap">
-    <input class="bima-input" id="bimaInput" type="text" placeholder="Chat BIMA segera hadir" disabled/>
-    <button class="bima-send" type="button" disabled aria-label="Kirim pesan"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 4 16 8-16 8 3-8-3-8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 12h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <input class="bima-input" id="bimaInput" type="text" placeholder="Ketik pesan untuk BIMA..." autocomplete="off"/>
+    <button class="bima-send" id="bimaSend" type="button" aria-label="Kirim pesan"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 4 16 8-16 8 3-8-3-8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 12h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
 </div>
 <script>
@@ -1261,106 +1286,278 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   var contextBox=document.getElementById('bimaContext');
   var handover=document.getElementById('bimaHandover');
   var waBtn=document.getElementById('bimaWhatsApp');
-  if(!fab||!panel||!closeBtn) return;
+  var input=document.getElementById('bimaInput');
+  var sendBtn=document.getElementById('bimaSend');
+  var messages=document.getElementById('bimaMessages');
+  var body=document.querySelector('#bimaPanel .bima-body');
+  var statusDot=document.getElementById('bimaStatusDot');
+  var statusLabel=document.getElementById('bimaStatusLabel');
+  if(!fab||!panel||!closeBtn||!input||!sendBtn||!messages) return;
 
+  var API_BASE=(window.BIMA_API_BASE||'http://127.0.0.1:8000').replace(/\/+$/,'');
+  var SESSION_KEY='vireqo_bima_session_id';
+  var NAME_KEY='vireqo_bima_customer_name';
+  var sessionId=sessionStorage.getItem(SESSION_KEY)||'';
+  var customerName=sessionStorage.getItem(NAME_KEY)||'';
+  var busy=false;
+  var sessionClosed=false;
+  var sessionGeneration=0;
+  var handoverFollowup=false;
+  var idleReminderTimer=null;
+  var autoCloseTimer=null;
+  var handoverCloseTimer=null;
   var activeService='';
+  var backendOnline=null;
+  var IDLE_REMINDER_MS=5*60*1000;
+  var AUTO_CLOSE_MS=5*60*1000;
+  var HANDOVER_CLOSE_MS=3*60*1000;
   var serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'};
+  var serviceApiKey={dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO'};
   var copy={
-    id:{
-      subtitle:'Vireqo AI Client Assistant',status:'Siap membantu konsultasi',title:'Halo! Saya BIMA.',greeting:'Ceritakan kebutuhan bisnis Anda. Saya akan membantu menentukan layanan Vireqo yang paling sesuai.',popular:'Rekomendasi untuk Anda',popularBadge:'Rekomendasi kami',other:'Layanan lainnya',dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO',coming:'Chat AI BIMA sedang disiapkan. Semua CTA konsultasi di Vireqo sekarang masuk melalui BIMA terlebih dahulu.',placeholder:'Chat BIMA segera hadir',open:'Buka Ask BIMA',close:'Tutup Ask BIMA',handoverTitle:'Siap lanjut dengan tim Vireqo?',handoverCopy:'Setelah konsultasi selesai, BIMA akan menyiapkan ringkasan kebutuhan Anda sebelum diteruskan ke WhatsApp.',wa:'WhatsApp Vireqo',
-      context:{general:'Saya akan bantu memahami kebutuhan Anda terlebih dahulu sebelum diteruskan ke tim Vireqo.',dashboard:'Anda memilih Dashboard Customer Service. BIMA akan mulai dari kebutuhan monitoring, metrik, workflow, dan kondisi tim CS Anda saat ini.',website:'Anda memilih Website & Landing Page. BIMA akan mulai dari tujuan website, target pelanggan, fitur utama, dan kebutuhan bisnis Anda.',cs:'Anda memilih Konsultasi Customer Service. BIMA akan mulai dari masalah layanan pelanggan dan proses CS yang berjalan saat ini.',training:'Anda memilih Training Customer Service. BIMA akan mulai dari profil peserta, tantangan tim, dan materi yang paling dibutuhkan.',staffing:'Anda memilih Penyediaan SDM Customer Service. BIMA akan mulai dari kebutuhan jumlah CS, jam operasional, channel, dan kriteria kandidat.',seo:'Anda memilih Konsultasi SEO. BIMA akan mulai dari website atau bisnis Anda saat ini, target pencarian, dan tujuan optimasi.'}
-    },
-    en:{
-      subtitle:'Vireqo AI Client Assistant',status:'Ready to help with consultation',title:"Hi! I'm BIMA.",greeting:'Tell me what your business needs. I’ll help identify the most suitable Vireqo service.',popular:'Recommended for you',popularBadge:'Our recommendation',other:'Other services',dashboard:'Customer Service Dashboard',website:'Website & Landing Page',cs:'Customer Service Consulting',training:'Customer Service Training',staffing:'Customer Service Staffing',seo:'SEO Consulting',coming:'BIMA AI chat is being prepared. All consultation CTAs on Vireqo now enter through BIMA first.',placeholder:'BIMA chat is coming soon',open:'Open Ask BIMA',close:'Close Ask BIMA',handoverTitle:'Ready to continue with the Vireqo team?',handoverCopy:'After the consultation, BIMA will prepare a summary of your needs before handing you over to WhatsApp.',wa:'WhatsApp Vireqo',
-      context:{general:'I’ll first help understand your needs before handing you over to the Vireqo team.',dashboard:'You selected the Customer Service Dashboard. BIMA will start with your monitoring needs, metrics, workflow, and current CS team setup.',website:'You selected Website & Landing Page. BIMA will start with your website goals, target customers, core features, and business needs.',cs:'You selected Customer Service Consulting. BIMA will start with your current customer-service challenges and workflow.',training:'You selected Customer Service Training. BIMA will start with participant profiles, team challenges, and the most relevant training topics.',staffing:'You selected Customer Service Staffing. BIMA will start with headcount, operating hours, channels, and candidate requirements.',seo:'You selected SEO Consulting. BIMA will start with your current website or business, search targets, and optimization goals.'}
-    }
+    id:{subtitle:'Vireqo AI Client Assistant',status:'Siap membantu konsultasi',title:'Halo! Saya BIMA.',greeting:'Ceritakan kebutuhan bisnis Anda. Saya akan membantu menentukan layanan Vireqo yang paling sesuai.',popular:'Rekomendasi untuk Anda',popularBadge:'Rekomendasi kami',other:'Layanan lainnya',dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO',coming:'Chat BIMA aktif. Pilih layanan atau tulis kebutuhan Anda langsung.',placeholder:'Ketik pesan untuk BIMA...',closedPlaceholder:'Sesi telah berakhir. Kirim pesan baru untuk memulai sesi baru.',open:'Buka Ask BIMA',close:'Tutup Ask BIMA',handoverTitle:'Siap lanjut dengan tim Vireqo?',handoverCopy:'Setelah konsultasi selesai, BIMA akan menyiapkan ringkasan kebutuhan Anda sebelum diteruskan ke WhatsApp.',wa:'WhatsApp Vireqo',send:'Kirim pesan',loading:'BIMA sedang mengetik...',offline:'BIMA sedang tidak dapat dihubungi. Anda tetap bisa melanjutkan melalui WhatsApp Vireqo.',context:{general:'Saya akan bantu memahami kebutuhan Anda terlebih dahulu sebelum diteruskan ke tim Vireqo.',dashboard:'Anda memilih Dashboard Customer Service. BIMA akan mulai dari kebutuhan monitoring, metrik, workflow, dan kondisi tim CS Anda saat ini.',website:'Anda memilih Website & Landing Page. BIMA akan mulai dari tujuan website, target pelanggan, fitur utama, dan kebutuhan bisnis Anda.',cs:'Anda memilih Konsultasi Customer Service. BIMA akan mulai dari masalah layanan pelanggan dan proses CS yang berjalan saat ini.',training:'Anda memilih Training Customer Service. BIMA akan mulai dari profil peserta, tantangan tim, dan materi yang paling dibutuhkan.',staffing:'Anda memilih Penyediaan SDM Customer Service. BIMA akan mulai dari kebutuhan jumlah CS, jam operasional, channel, dan kriteria kandidat.',seo:'Anda memilih Konsultasi SEO. BIMA akan mulai dari website atau bisnis Anda saat ini, target pencarian, dan tujuan optimasi.'}},
+    en:{subtitle:'Vireqo AI Client Assistant',status:'Ready to help with consultation',title:"Hi! I'm BIMA.",greeting:'Tell me what your business needs. I’ll help identify the most suitable Vireqo service.',popular:'Recommended for you',popularBadge:'Our recommendation',other:'Other services',dashboard:'Customer Service Dashboard',website:'Website & Landing Page',cs:'Customer Service Consulting',training:'Customer Service Training',staffing:'Customer Service Staffing',seo:'SEO Consulting',coming:'BIMA chat is active. Choose a service or type your needs directly.',placeholder:'Type a message to BIMA...',closedPlaceholder:'This session has ended. Send a new message to start a new session.',open:'Open Ask BIMA',close:'Close Ask BIMA',handoverTitle:'Ready to continue with the Vireqo team?',handoverCopy:'After the consultation, BIMA will prepare a summary of your needs before handing you over to WhatsApp.',wa:'WhatsApp Vireqo',send:'Send message',loading:'BIMA is typing...',offline:'BIMA is currently unavailable. You can still continue via Vireqo WhatsApp.',context:{general:'I’ll first help understand your needs before handing you over to the Vireqo team.',dashboard:'You selected the Customer Service Dashboard. BIMA will start with your monitoring needs, metrics, workflow, and current CS team setup.',website:'You selected Website & Landing Page. BIMA will start with your website goals, target customers, core features, and business needs.',cs:'You selected Customer Service Consulting. BIMA will start with your current customer-service challenges and workflow.',training:'You selected Customer Service Training. BIMA will start with participant profiles, team challenges, and the most relevant training topics.',staffing:'You selected Customer Service Staffing. BIMA will start with headcount, operating hours, channels, and candidate requirements.',seo:'You selected SEO Consulting. BIMA will start with your current website or business, search targets, and optimization goals.'}}
   };
-
   function lang(){return document.documentElement.lang==='en'?'en':'id';}
   function t(){return copy[lang()];}
-  function setOpen(open){
-    panel.classList.toggle('open',open);
-    panel.setAttribute('aria-hidden',open?'false':'true');
-    fab.setAttribute('aria-expanded',open?'true':'false');
-  }
-  function setActiveService(service){
-    activeService=service||'';
-    document.querySelectorAll('[data-bima-service]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-bima-service')===activeService);});
-    if(activeService){
-      contextBox.textContent=t().context[activeService]||t().context.general;
-      contextBox.classList.add('show');
-    }else{
-      contextBox.textContent=t().context.general;
-      contextBox.classList.remove('show');
+  function applyBackendStatus(isOnline){
+    backendOnline=!!isOnline;
+    if(statusDot){
+      statusDot.classList.toggle('is-online',backendOnline);
+      statusDot.classList.toggle('is-offline',!backendOnline);
+    }
+    if(statusLabel){
+      statusLabel.textContent=backendOnline?t().status:(lang()==='en'?'BIMA is offline':'BIMA sedang offline');
     }
   }
-  function openForService(service){
-    setActiveService(service||'');
-    setOpen(true);
-    setTimeout(function(){panel.scrollTop=0;},0);
+  async function checkBackendHealth(){
+    try{
+      var response=await fetch(API_BASE+'/health',{method:'GET',cache:'no-store'});
+      applyBackendStatus(response.ok);
+    }catch(_){
+      applyBackendStatus(false);
+    }
   }
+  function scrollChat(){if(body)setTimeout(function(){body.scrollTop=body.scrollHeight;},0);}
+  function setBusy(state){busy=state;input.disabled=state;sendBtn.disabled=state;}
+  function clearIdleTimers(){if(idleReminderTimer){clearTimeout(idleReminderTimer);idleReminderTimer=null;}if(autoCloseTimer){clearTimeout(autoCloseTimer);autoCloseTimer=null;}}
+  function clearHandoverTimer(){if(handoverCloseTimer){clearTimeout(handoverCloseTimer);handoverCloseTimer=null;}}
+  function markSessionClosed(){clearIdleTimers();clearHandoverTimer();handoverFollowup=false;sessionClosed=true;panel.classList.add('chat-closed');input.placeholder=t().closedPlaceholder;scrollChat();}
+  function addMessage(role,text,extraClass){var el=document.createElement('div');el.className='bima-msg '+role+(extraClass?' '+extraClass:'');el.textContent=text;messages.appendChild(el);scrollChat();return el;}
+  function enterConversationMode(){panel.classList.add('chat-active');}
+  function setOpen(open){panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',open?'false':'true');fab.setAttribute('aria-expanded',open?'true':'false');if(open)setTimeout(function(){input.focus();},120);}
+  function setActiveService(service){activeService=service||'';document.querySelectorAll('[data-bima-service]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-bima-service')===activeService);});if(activeService){contextBox.textContent=t().context[activeService]||t().context.general;contextBox.classList.add('show');}else{contextBox.textContent=t().context.general;contextBox.classList.remove('show');}}
+  function openForService(service){setActiveService(service||'');setOpen(true);scrollChat();}
+
+  async function postSessionEvent(eventName){
+    if(!sessionId||sessionClosed)return null;
+    var response=await fetch(API_BASE+'/api/session/'+encodeURIComponent(sessionId)+'/event',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event:eventName,local_hour:(new Date()).getHours()})});
+    var data={};try{data=await response.json();}catch(_){}
+    if(!response.ok)throw new Error(data.detail||('Session event HTTP '+response.status));
+    return data;
+  }
+  function scheduleIdleFlow(){
+    clearIdleTimers();
+    if(!sessionId||sessionClosed||handoverFollowup)return;
+    idleReminderTimer=setTimeout(async function(){
+      try{var data=await postSessionEvent('idle_reminder');if(data&&data.message)addMessage('assistant',data.message);}catch(error){console.error('BIMA idle reminder error:',error);}
+      autoCloseTimer=setTimeout(async function(){
+        try{var data=await postSessionEvent('close_inactive');if(data&&data.message)addMessage('assistant',data.message);markSessionClosed();}catch(error){console.error('BIMA auto-close error:',error);}
+      },AUTO_CLOSE_MS);
+    },IDLE_REMINDER_MS);
+  }
+  function scheduleHandoverClose(){
+    clearHandoverTimer();
+    if(!sessionId||sessionClosed||!handoverFollowup)return;
+    handoverCloseTimer=setTimeout(async function(){
+      try{
+        var data=await postSessionEvent('handover_close');
+        if(data&&data.message)addMessage('assistant',data.message);
+        markSessionClosed();
+      }catch(error){
+        console.error('BIMA handover close error:',error);
+      }
+    },HANDOVER_CLOSE_MS);
+  }
+  async function startHandoverFollowup(){
+    if(!sessionId||sessionClosed||handoverFollowup)return;
+    clearIdleTimers();
+    clearHandoverTimer();
+    handoverFollowup=true;
+    try{
+      var data=await postSessionEvent('handover_started');
+      if(data&&data.message)addMessage('assistant',data.message);
+      scheduleHandoverClose();
+    }catch(error){
+      handoverFollowup=false;
+      console.error('BIMA handover follow-up error:',error);
+    }
+  }
+  function resetForNewSession(){
+    clearIdleTimers();
+    clearHandoverTimer();
+    handoverFollowup=false;
+    sessionGeneration++;
+    sessionId='';
+    customerName='';
+    sessionClosed=false;
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(NAME_KEY);
+    panel.classList.remove('chat-closed');
+    panel.classList.remove('chat-active');
+    messages.innerHTML='';
+    if(handover){handover.classList.remove('show');handover.setAttribute('aria-hidden','true');}
+    setActiveService('');
+    input.value='';
+    input.placeholder=t().placeholder;
+  }
+
+  async function closeFromX(){
+    var sid=sessionId;
+    var shouldClose=sid&&!sessionClosed;
+    clearIdleTimers();
+    clearHandoverTimer();
+    setOpen(false);
+    if(shouldClose){
+      fetch(API_BASE+'/api/session/'+encodeURIComponent(sid)+'/event',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({event:'manual_close',local_hour:(new Date()).getHours()})
+      }).catch(function(error){console.error('BIMA manual close error:',error);});
+    }
+    resetForNewSession();
+    fab.focus();
+  }
+
+  async function sendMessage(options){
+    options=options||{};
+    if(busy)return;
+    var message=input.value.trim();
+    if(!message)return;
+    if(sessionClosed)resetForNewSession();
+    var replyingToHandover=handoverFollowup;
+    clearIdleTimers();
+    if(replyingToHandover)clearHandoverTimer();
+    enterConversationMode();
+    input.value='';
+    addMessage('user',message);
+    var payload={message:message,entry_service:serviceApiKey[activeService]||null,local_hour:(new Date()).getHours()};
+    if(options.serviceSelected)payload.service_selected=true;
+    if(sessionId)payload.session_id=sessionId;
+    if(customerName)payload.customer_name=customerName;
+    var requestGeneration=sessionGeneration;
+    setBusy(true);
+    var loading=addMessage('assistant',t().loading,'loading');
+    try{
+      var response=await fetch(API_BASE+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      var data={};try{data=await response.json();}catch(_){}
+      if(!response.ok)throw new Error(data.detail||('HTTP '+response.status));
+      applyBackendStatus(true);
+      if(requestGeneration!==sessionGeneration){
+        if(loading&&loading.parentNode)loading.parentNode.removeChild(loading);
+        if(data.session_id){
+          fetch(API_BASE+'/api/session/'+encodeURIComponent(data.session_id)+'/event',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({event:'manual_close',local_hour:(new Date()).getHours()})
+          }).catch(function(error){console.error('BIMA stale session close error:',error);});
+        }
+        return;
+      }
+      if(loading&&loading.parentNode)loading.parentNode.removeChild(loading);
+      if(data.session_id){sessionId=data.session_id;sessionStorage.setItem(SESSION_KEY,sessionId);}
+      if(data.customer_name){customerName=data.customer_name;sessionStorage.setItem(NAME_KEY,customerName);}
+      var assistantAnswer=data.answer||'BIMA tidak mengirim jawaban.';
+      addMessage('assistant',assistantAnswer);
+
+      if(data.conversation_status==='closed_completed'||data.conversation_status==='closed_inactive'){
+        markSessionClosed();
+      }
+
+      // PHASE 3.2 — deterministic WhatsApp handover.
+      // Conversation/name/session behavior above remains untouched.
+      var normalizedAnswer=assistantAnswer
+        .toLowerCase()
+        .replace(/[*_`~]/g,' ')
+        .replace(/\s+/g,' ')
+        .trim();
+
+      var shouldShowWhatsApp =
+        normalizedAnswer.includes('lanjut via whatsapp') ||
+        normalizedAnswer.includes('lanjut melalui whatsapp') ||
+        normalizedAnswer.includes('lanjut ke whatsapp') ||
+        normalizedAnswer.includes('ringkasan kebutuhan anda sudah saya siapkan') ||
+        (normalizedAnswer.includes('menekan tombol') && normalizedAnswer.includes('whatsapp')) ||
+        normalizedAnswer.includes('continue via whatsapp') ||
+        normalizedAnswer.includes('continue through whatsapp');
+
+      if(shouldShowWhatsApp && !sessionClosed && handover && waBtn){
+        var waMessage=lang()==='en'
+          ? 'Hi Vireqo, I have consulted with BIMA and would like to continue.'
+          : 'Halo Vireqo, saya sudah berkonsultasi dengan BIMA dan ingin melanjutkan.';
+
+        if(customerName){
+          waMessage+='\n\n'+(lang()==='en'?'Name: ':'Nama: ')+customerName;
+        }
+
+        var serviceLabel=activeService
+          ? (serviceApiKey[activeService]||activeService)
+          : '';
+        if(serviceLabel){
+          waMessage+='\n\n'+(lang()==='en'?'Service: ':'Layanan: ')+serviceLabel;
+        }
+
+        waMessage+='\n\n'+(lang()==='en'?'BIMA summary:\n':'Ringkasan BIMA:\n')+assistantAnswer;
+        waBtn.href='https://wa.me/6281912345611?text='+encodeURIComponent(waMessage);
+        waBtn.textContent=lang()==='en'?'Continue via WhatsApp Vireqo':'Lanjut via WhatsApp Vireqo';
+        handover.classList.add('show');
+        handover.setAttribute('aria-hidden','false');
+        scrollChat();
+      }
+
+      if(!sessionClosed){
+        if(handoverFollowup)scheduleHandoverClose();
+        else scheduleIdleFlow();
+      }
+    }catch(error){
+      applyBackendStatus(false);
+      if(loading&&loading.parentNode)loading.parentNode.removeChild(loading);
+      addMessage('system',t().offline);
+      console.error('BIMA chat error:',error);
+      var serviceLabel=activeService?(serviceApiKey[activeService]||activeService):'';
+      var fallback=lang()==='en'?'Hi Vireqo, I tried to consult with BIMA but the chat is currently unavailable.':'Halo Vireqo, saya mencoba berkonsultasi dengan BIMA tetapi chat sedang tidak tersedia.';
+      if(serviceLabel)fallback+='\n\n'+(lang()==='en'?'Service: ':'Layanan: ')+serviceLabel;
+      waBtn.href='https://wa.me/6281912345611?text='+encodeURIComponent(fallback);
+      handover.classList.add('show');
+      if(replyingToHandover&&handoverFollowup&&!sessionClosed)scheduleHandoverClose();
+    }finally{setBusy(false);input.focus();scrollChat();}
+  }
+
+  waBtn.addEventListener('click',function(){startHandoverFollowup();});
   fab.addEventListener('click',function(){setOpen(!panel.classList.contains('open'));});
-  closeBtn.addEventListener('click',function(){setOpen(false);fab.focus();});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape') setOpen(false);});
-
+  closeBtn.addEventListener('click',closeFromX);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
   document.querySelectorAll('[data-bima-service]').forEach(function(btn){
-    btn.addEventListener('click',function(){setActiveService(btn.getAttribute('data-bima-service'));});
-  });
-
-  /* All existing consultation CTAs now enter through BIMA first. Existing visual/UI stays untouched. */
-  document.querySelectorAll('a.wa-link').forEach(function(link){
-    link.addEventListener('click',function(e){
-      e.preventDefault();
-      var service=serviceFromMsgKey[link.getAttribute('data-msg-key')]||'';
-      openForService(service);
+    btn.addEventListener('click',function(){
+      if(busy)return;
+      if(sessionClosed)resetForNewSession();
+      var service=btn.getAttribute('data-bima-service')||'';
+      setActiveService(service);
+      input.value=service?(t()[service]||serviceApiKey[service]||service):'';
+      input.focus();
+      sendMessage({serviceSelected:true});
     });
   });
-
-  function syncLanguage(){
-    var x=t();
-    document.getElementById('bimaSubtitle').textContent=x.subtitle;
-    document.getElementById('bimaStatusLabel').textContent=x.status;
-    document.getElementById('bimaGreetingTitle').textContent=x.title;
-    document.getElementById('bimaGreeting').textContent=x.greeting;
-    document.getElementById('bimaPopularLabel').textContent=x.popular;
-    document.getElementById('bimaPopularBadge').textContent=x.popularBadge;
-    document.getElementById('bimaOtherLabel').textContent=x.other;
-    document.getElementById('bimaDashboardTitle').textContent=x.dashboard;
-    document.getElementById('bimaServiceWebsite').textContent=x.website;
-    document.getElementById('bimaServiceCS').textContent=x.cs;
-    document.getElementById('bimaServiceTraining').textContent=x.training;
-    document.getElementById('bimaServiceStaffing').textContent=x.staffing;
-    document.getElementById('bimaServiceSEO').textContent=x.seo;
-    document.getElementById('bimaComing').textContent=x.coming;
-    document.getElementById('bimaInput').placeholder=x.placeholder;
-    document.getElementById('bimaHandoverTitle').textContent=x.handoverTitle;
-    document.getElementById('bimaHandoverCopy').textContent=x.handoverCopy;
-    waBtn.textContent=x.wa;
-    fab.setAttribute('aria-label',x.open);
-    closeBtn.setAttribute('aria-label',x.close);
-    setActiveService(activeService);
-  }
+  input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+  sendBtn.addEventListener('click',sendMessage);
+  document.querySelectorAll('a.wa-link').forEach(function(link){link.addEventListener('click',function(e){e.preventDefault();openForService(serviceFromMsgKey[link.getAttribute('data-msg-key')]||'');});});
+  function syncLanguage(){var x=t();document.getElementById('bimaSubtitle').textContent=x.subtitle;if(statusLabel)statusLabel.textContent=(backendOnline===false?(lang()==='en'?'BIMA is offline':'BIMA sedang offline'):x.status);document.getElementById('bimaGreetingTitle').textContent=x.title;document.getElementById('bimaGreeting').textContent=x.greeting;document.getElementById('bimaPopularLabel').textContent=x.popular;document.getElementById('bimaPopularBadge').textContent=x.popularBadge;document.getElementById('bimaOtherLabel').textContent=x.other;document.getElementById('bimaDashboardTitle').textContent=x.dashboard;document.getElementById('bimaServiceWebsite').textContent=x.website;document.getElementById('bimaServiceCS').textContent=x.cs;document.getElementById('bimaServiceTraining').textContent=x.training;document.getElementById('bimaServiceStaffing').textContent=x.staffing;document.getElementById('bimaServiceSEO').textContent=x.seo;document.getElementById('bimaComing').textContent=x.coming;input.placeholder=sessionClosed?x.closedPlaceholder:x.placeholder;sendBtn.setAttribute('aria-label',x.send);document.getElementById('bimaHandoverTitle').textContent=x.handoverTitle;document.getElementById('bimaHandoverCopy').textContent=x.handoverCopy;waBtn.textContent=x.wa;fab.setAttribute('aria-label',x.open);closeBtn.setAttribute('aria-label',x.close);setActiveService(activeService);}
   syncLanguage();
+  checkBackendHealth();
+  setInterval(checkBackendHealth,30000);
+  window.addEventListener('online',checkBackendHealth);
+  window.addEventListener('offline',function(){applyBackendStatus(false);});
   new MutationObserver(syncLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-
-  /* Phase 3 integration hooks. Handover stays hidden until BIMA decides the consultation is complete. */
-  window.BIMA_UI={
-    open:function(){openForService('');},
-    openForService:openForService,
-    hideHandover:function(){handover.classList.remove('show');},
-    showHandover:function(options){
-      options=options||{};
-      var service=options.service||activeService||'';
-      var summary=options.summary||'';
-      var serviceLabel=service ? ({dashboard:t().dashboard,website:t().website,cs:t().cs,training:t().training,staffing:t().staffing,seo:t().seo}[service]||service) : '';
-      var message=lang()==='en' ? 'Hi Vireqo, I have consulted with BIMA and would like to continue.' : 'Halo Vireqo, saya sudah berkonsultasi dengan BIMA dan ingin melanjutkan.';
-      if(serviceLabel) message+='\n\n'+(lang()==='en'?'Service: ':'Layanan: ')+serviceLabel;
-      if(summary) message+='\n\n'+(lang()==='en'?'BIMA summary: ':'Ringkasan BIMA: ')+summary;
-      waBtn.href='https://wa.me/6281912345611?text='+encodeURIComponent(message);
-      handover.classList.add('show');
-      setOpen(true);
-    }
-  };
+  window.BIMA_UI={open:function(){openForService('');},openForService:openForService,hideHandover:function(){handover.classList.remove('show');},showHandover:function(options){options=options||{};var service=options.service||activeService||'';var summary=options.summary||'';var serviceLabel=service?({dashboard:t().dashboard,website:t().website,cs:t().cs,training:t().training,staffing:t().staffing,seo:t().seo}[service]||service):'';var message=lang()==='en'?'Hi Vireqo, I have consulted with BIMA and would like to continue.':'Halo Vireqo, saya sudah berkonsultasi dengan BIMA dan ingin melanjutkan.';if(customerName)message+='\n\n'+(lang()==='en'?'Name: ':'Nama: ')+customerName;if(serviceLabel)message+='\n\n'+(lang()==='en'?'Service: ':'Layanan: ')+serviceLabel;if(summary)message+='\n\n'+(lang()==='en'?'BIMA summary: ':'Ringkasan BIMA: ')+summary;waBtn.href='https://wa.me/6281912345611?text='+encodeURIComponent(message);handover.classList.add('show');setOpen(true);}};
 })();
 </script>
 </body>
