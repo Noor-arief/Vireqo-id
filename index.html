@@ -165,7 +165,7 @@ body.no-scroll{overflow:hidden}
 .svc-icon svg{width:24px;height:24px}
 .svc h3{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:8px}
 .svc p{font-size:14px;color:var(--t2);margin-bottom:18px;line-height:1.6}
-.svc-list{list-style:none;margin-bottom:20px;flex:1}
+.svc-list{list-style:none;margin-bottom:20px;flex:1;display:flex;flex-direction:column;justify-content:center}
 .svc-list li{font-size:13.5px;color:var(--t2);padding:7px 0;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px}
 .svc-list li:first-child{border-top:none}
 .svc-list li svg{width:14px;height:14px;flex-shrink:0;color:var(--teal)}
@@ -207,7 +207,7 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 .footer-grid li{margin-bottom:9px}
 .footer-grid a{font-size:13.5px;color:var(--t2)}
 .footer-grid a:hover{color:var(--teal-dark)}
-.footer-brand img{height:48px;margin-bottom:12px}
+.footer-brand img{height:42px;width:auto;margin-bottom:12px}
 .footer-brand p{font-size:13px;color:var(--t3);max-width:230px;line-height:1.6}
 .footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--t3);align-items:center}
 
@@ -285,6 +285,7 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
   .brand img{height:26px}
   .hero{padding-top:36px}
   .hero-vp{gap:11px}
+  .hero-vp span{padding-right:92px}
   .trust-row{gap:18px;justify-content:flex-start}
   .btn{padding:12px 20px;font-size:14px}
   .hero-cta .btn,.cta-band .hero-cta .btn{width:100%;justify-content:center}
@@ -347,8 +348,254 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 @media(prefers-reduced-motion:reduce){.bima-fab-avatar img,.bima-avatar img{animation:none}.bima-fab,.bima-panel,.bima-popular,.bima-service{transition:none}}
 @media(max-width:600px){.bima-fab{right:16px;bottom:16px;padding:8px 14px 8px 9px}.bima-fab-avatar{width:32px;height:32px}.bima-panel{right:16px;bottom:72px;width:calc(100vw - 32px);max-height:calc(100vh - 92px);border-radius:18px}.bima-head{padding:12px 14px}.bima-avatar{width:44px;height:44px}.bima-body{padding:14px}.bima-services{grid-template-columns:1fr 1fr;gap:7px}.bima-service{font-size:11px;padding:9px}.bima-input-wrap{padding:10px}}
 @media(max-width:390px){.bima-services{grid-template-columns:1fr}.bima-service{min-height:42px}.bima-fab #bimaFabLabel{display:none}.bima-fab{padding:7px}}
+
+
+/* =========================================================
+   VIREQO V4 — VISUAL POLISH ONLY
+   Layout, section order, service-card placement and app logic
+   intentionally remain unchanged from the approved baseline.
+   ========================================================= */
+:root{
+  --v4-blue:#233E93;
+  --v4-blue-2:#3855D9;
+  --v4-ink:#17223B;
+  --v4-soft:#F2F7FC;
+  --v4-soft-teal:#EEF9F7;
+  --v4-line:#DDE7EE;
+  --v4-shadow:0 14px 36px rgba(28,48,78,.09);
+}
+body{background:#fff;color:var(--v4-ink)}
+.wrap{max-width:1180px}
+
+/* Navigation — clean commercial-tech treatment */
+header{background:rgba(255,255,255,.97);border-bottom:1px solid rgba(221,231,238,.85)}
+header.scrolled{background:rgba(255,255,255,.96);box-shadow:0 8px 28px rgba(31,51,78,.07);backdrop-filter:blur(12px)}
+.nav{min-height:82px;padding-top:14px;padding-bottom:14px;gap:24px}
+.brand{display:flex;align-items:center;flex-shrink:0}
+.brand img{height:42px;width:auto;filter:none!important;opacity:1!important;mix-blend-mode:normal!important}
+.nav-links{margin-left:auto;gap:30px;color:#24324B;font-size:14px;font-weight:700}
+.nav-links a{position:relative;padding:10px 0}
+.nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:3px;height:2px;border-radius:2px;background:var(--teal);transition:right .2s ease}
+.nav-links a:hover::after{right:0}
+.nav-cta{margin-left:10px}
+.lang-toggle{height:42px;padding:0 14px;border-radius:9px;background:#fff;border:1px solid #D7E1E8}
+.btn{border-radius:9px;padding:13px 24px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease}
+.btn-primary{background:var(--teal);box-shadow:0 8px 20px rgba(18,140,126,.18)}
+.btn-primary:hover{background:var(--teal-dark);box-shadow:0 10px 24px rgba(18,140,126,.24)}
+.btn-ghost{border-color:#D3DEE6;background:#fff}
+
+/* Hero — same structure, stronger hierarchy and cleaner visual field */
+.hero{padding-top:54px;background:linear-gradient(180deg,#F3F8FE 0%,#F8FBFD 68%,#fff 100%);position:relative}
+.hero .wrap{gap:58px;padding-bottom:64px}
+.hero-blob{filter:blur(90px);opacity:.17}
+.hero-blob-1{background:#8BDDD1;width:460px;height:460px}
+.hero-blob-2{background:#FFD992;opacity:.13}
+.dot-grid{opacity:.16;background-size:26px 26px}
+.badge{background:#fff;border-color:#D7E8E5;box-shadow:0 4px 16px rgba(31,65,85,.05);padding:7px 13px}
+.hero h1{font-size:clamp(38px,4.6vw,58px);line-height:1.08;letter-spacing:-1.7px;margin:22px 0 22px;max-width:650px}
+.hero h1 span{background:linear-gradient(90deg,var(--teal-dark),#18A996);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:17px;line-height:1.72;color:#42516A;max-width:590px}
+.hero-vp{gap:11px}
+.hero-vp span{font-size:14px;color:#33445C}
+.hero-cta{gap:10px}
+
+/* Existing hero mockup: presentation polish, no structural change */
+.hero-visual{padding:8px 0}
+.hv-card{border:1px solid #DCE6EC;border-radius:18px;box-shadow:0 24px 60px rgba(33,58,85,.14),0 4px 14px rgba(33,58,85,.06);padding:14px;background:rgba(255,255,255,.98)}
+.hv-site{background:#F7FAFC;border:1px solid #E7EEF2}
+.hv-site-hero{background:linear-gradient(135deg,#E6F7F4,#F4F8FF 58%,#FFF7E9)}
+.hv-float{border-color:#DDE7ED;border-radius:11px;box-shadow:0 12px 30px rgba(31,54,78,.12)}
+.hv-float-1{bottom:-16px}
+.hv-float-2{top:18px}
+
+/* Trust strip */
+.trust{padding:25px 0;background:#fff;border-color:#E5EDF2}
+.trust-row{justify-content:space-between;gap:24px}
+.trust-item .l{color:#314159}
+
+/* Shared section rhythm */
+.section{padding:82px 0}
+.section:nth-of-type(even){background:#FBFDFE}
+.section-head{margin-bottom:42px}
+.eyebrow{font-size:11px;letter-spacing:1.35px;background:var(--v4-soft-teal);display:inline-flex;padding:6px 10px;border-radius:6px}
+.section-head h2{font-size:clamp(28px,3.3vw,38px);line-height:1.18;letter-spacing:-1px;color:var(--v4-ink);margin-top:10px}
+.section-head p{color:#56657A;line-height:1.7}
+
+/* Existing cards — preserve all grids/positions/sizing relationships */
+.vp-card,.svc,.step,.why{border-color:#E0E9EF;box-shadow:0 5px 18px rgba(30,52,75,.055);background:#fff}
+.vp-card{border-radius:14px;padding:25px}
+.vp-card:hover,.svc:hover,.step:hover{transform:translateY(-4px);box-shadow:var(--v4-shadow);border-color:#C9DDD9}
+.vp-icon{border-radius:11px}
+
+/* Services: DO NOT alter .services grid, card order, spans or placement */
+.svc{border-radius:15px;padding:30px;overflow:visible}
+.svc-icon{border-radius:11px}
+.svc h3{color:var(--v4-ink)}
+.svc p,.svc-list li{color:#536277}
+.svc-price{background:#F0F9F7;border-color:#D3ECE7}
+.svc-popular{top:-11px;right:20px;border-radius:6px;background:#F5A623;color:#17223B;box-shadow:none}
+.svc-topproduct{top:-11px;left:20px;border-radius:6px;background:#253A65;box-shadow:none}
+.csd-trigger{border-style:solid;border-color:#CFE7E2;background:#F7FCFB;border-radius:9px}
+.csd-trigger:hover{background:#ECF8F6;border-color:var(--teal)}
+
+/* Steps and supporting cards */
+.step{border-radius:14px;padding:24px}
+.step-num{border-radius:8px;background:#253A65}
+.why{border-radius:16px;box-shadow:0 10px 28px rgba(30,52,75,.06)}
+.why-badge{border-radius:12px}
+
+/* CTA: bright commercial-tech instead of cinematic */
+.cta-band{background:linear-gradient(135deg,#153D70 0%,#116F71 58%,#128C7E 100%);border-radius:18px;padding:58px 42px;box-shadow:0 18px 44px rgba(20,70,82,.16)}
+.cta-band::before{opacity:.18}
+.cta-band::after{opacity:.12}
+.cta-band h2{font-size:clamp(26px,3.3vw,36px)}
+.cta-band p{color:#E2F1EF}
+
+/* Footer */
+footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
+.footer-grid{gap:34px}
+.footer-grid h5{color:#3B4A5F}
+.footer-grid a{color:#506078}
+.footer-brand img{height:42px;width:auto!important;filter:none!important;opacity:1!important;mix-blend-mode:normal!important}
+.footer-bottom{border-color:#E1E9EE}
+
+/* BIMA keeps existing behavior; visual polish only */
+.bima-fab{box-shadow:0 14px 34px rgba(18,140,126,.24)!important}
+
+/* Responsive safeguards: no clipping, no layout experiment */
+@media(max-width:960px){
+  .hero{padding-top:38px}
+  .hero .wrap{gap:30px}
+  .hero h1{font-size:clamp(36px,7vw,50px)}
+  .hero-visual{max-width:650px;width:100%;margin-left:auto;margin-right:auto}
+  .trust-row{justify-content:center}
+}
+@media(max-width:860px){
+  .nav{min-height:70px;padding-top:10px;padding-bottom:10px}
+  .brand img{height:38px}
+  .hamburger{display:flex}
+}
+@media(max-width:640px){
+  .wrap{padding-left:18px;padding-right:18px}
+  .hero{padding-top:28px}
+  .hero .wrap{padding-bottom:48px}
+  .hero h1{font-size:36px;letter-spacing:-1.1px}
+  .hero p{font-size:15.5px}
+  .hero-cta .btn{width:100%;justify-content:center}
+  .hv-float{position:relative;inset:auto!important;margin-top:10px;width:100%}
+  .section{padding:64px 0}
+  .section-head{text-align:left;margin-bottom:30px}
+  .section-head h2{font-size:30px}
+  .svc{padding:25px 22px}
+  .cta-band{padding:42px 22px;text-align:left}
+  .cta-band .hero-cta{justify-content:flex-start}
+  .footer-grid{gap:24px}
+}
 </style>
-<!-- SEO: ganti https://vireqo.id/ di bawah dengan domain resmi Vireqo saat sudah live --><link href="https://vireqo.id/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Vireqo" property="og:site_name"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" property="og:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." property="og:description"/><meta content="https://vireqo.id/" property="og:url"/><meta content="id_ID" property="og:locale"/><meta content="en_US" property="og:locale:alternate"/><meta content="https://vireqo.id/og-image.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" name="twitter:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." name="twitter:description"/><meta content="https://vireqo.id/og-image.png" name="twitter:image"/><meta content="#128C7E" name="theme-color"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vireqo", "description": "Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard & training customer service, hingga penyediaan SDM CS. Konsultasi gratis.", "areaServed": "ID", "telephone": "+6281912345611", "url": "https://vireqo.id/", "sameAs": ["https://wa.me/6281912345611"], "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website dan Landing Page"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Dashboard Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Training Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Penyediaan SDM Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi SEO"}}]}</script><meta content="index, follow" name="robots"/><meta content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'" http-equiv="Content-Security-Policy"/><meta content="strict-origin-when-cross-origin" name="referrer"/></head>
+<!-- SEO: ganti https://vireqo.id/ di bawah dengan domain resmi Vireqo saat sudah live --><link href="https://vireqo.id/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Vireqo" property="og:site_name"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" property="og:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." property="og:description"/><meta content="https://vireqo.id/" property="og:url"/><meta content="id_ID" property="og:locale"/><meta content="en_US" property="og:locale:alternate"/><meta content="https://vireqo.id/og-image.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia" name="twitter:title"/><meta content="Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis." name="twitter:description"/><meta content="https://vireqo.id/og-image.png" name="twitter:image"/><meta content="#128C7E" name="theme-color"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vireqo", "description": "Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard & training customer service, hingga penyediaan SDM CS. Konsultasi gratis.", "areaServed": "ID", "telephone": "+6281912345611", "url": "https://vireqo.id/", "sameAs": ["https://wa.me/6281912345611"], "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website dan Landing Page"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Dashboard Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Training Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Penyediaan SDM Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi Customer Service"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Konsultasi SEO"}}]}</script><meta content="index, follow" name="robots"/><meta content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'" http-equiv="Content-Security-Policy"/><meta content="strict-origin-when-cross-origin" name="referrer"/>
+<style id="vireqo-v4-hero-refinement">
+/* V4 hero proportion refinement — visual-only, services and functionality untouched */
+@media (min-width: 1025px) {
+  #home.hero,
+  .hero {
+    min-height: auto !important;
+    padding-top: 34px !important;
+    padding-bottom: 42px !important;
+  }
+
+  .hero .hero-grid,
+  .hero-grid {
+    align-items: center !important;
+    gap: clamp(40px, 4.5vw, 76px) !important;
+  }
+
+  .hero .hero-copy,
+  .hero-copy {
+    min-width: 0 !important;
+  }
+
+  .hero h1,
+  .hero .hero-title,
+  .hero-title {
+    font-size: clamp(48px, 3.55vw, 62px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+    margin-bottom: 22px !important;
+    max-width: 760px !important;
+  }
+
+  .hero .hero-sub,
+  .hero-sub,
+  .hero .hero-description,
+  .hero-description {
+    font-size: clamp(17px, 1.12vw, 20px) !important;
+    line-height: 1.62 !important;
+    max-width: 700px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .hero .hero-visual,
+  .hero-visual {
+    transform: scale(.84) !important;
+    transform-origin: center center !important;
+    margin: -34px -7% -34px -7% !important;
+  }
+
+  .hero .hero-actions,
+  .hero-actions {
+    margin-top: 24px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero .hero-grid,
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(500px, .98fr) !important;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1279px) {
+  .hero h1,
+  .hero .hero-title,
+  .hero-title {
+    font-size: clamp(46px, 4.25vw, 55px) !important;
+  }
+
+  .hero .hero-visual,
+  .hero-visual {
+    transform: scale(.80) !important;
+    margin: -44px -10% -44px -10% !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero h1,
+  .hero .hero-title,
+  .hero-title {
+    font-size: clamp(42px, 7vw, 58px) !important;
+    line-height: 1.09 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero h1,
+  .hero .hero-title,
+  .hero-title {
+    font-size: clamp(38px, 11vw, 48px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .hero .hero-visual,
+  .hero-visual {
+    transform: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+</style>
+
+</head>
 <body>
 <header id="siteHeader">
 <div class="nav">
