@@ -361,6 +361,15 @@ footer{background:var(--white);border-top:1px solid var(--border);padding:52px 0
 .bima-msg.assistant{align-self:flex-start;background:#fff;color:var(--t2);border:1px solid var(--border);border-bottom-left-radius:5px;box-shadow:var(--sh-sm)}
 .bima-msg.system{align-self:center;max-width:100%;padding:8px 11px;background:var(--teal-l);color:var(--teal-dark);font-size:11.5px;text-align:center}
 .bima-msg.loading{color:var(--t3);font-style:italic}
+.bima-msg-text{display:block}
+.bima-msg-time{display:block;margin-top:4px;font-size:10px;line-height:1.2;letter-spacing:.1px;text-align:right;opacity:.78}
+.bima-msg.assistant .bima-msg-time{text-align:left;color:var(--t3)}
+.bima-msg.user .bima-msg-time{color:rgba(255,255,255,.82)}
+.bima-session-closed{display:none;flex-direction:column;align-items:center;gap:5px;margin:12px auto 2px;padding-top:10px;width:100%;border-top:1px solid var(--border);color:var(--t3);font-size:10.5px;text-align:center}
+.bima-panel.chat-closed .bima-session-closed{display:flex}
+.bima-session-closed-powered{display:flex;align-items:center;justify-content:center;gap:5px;font-size:9px;color:var(--t3)}
+.bima-session-closed-logo{display:inline-flex;align-items:center}
+.bima-session-closed-logo img{display:block;height:14px;width:auto;max-width:64px}
 #bimaDiscovery{display:block}
 .bima-panel.chat-active .bima-bubble{display:none}
 .bima-panel.chat-active #bimaDiscovery{display:none}
@@ -1246,6 +1255,10 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
     </div>
     <div class="bima-context" id="bimaContext"></div>
     <div class="bima-messages" id="bimaMessages" aria-live="polite"></div>
+    <div class="bima-session-closed" id="bimaSessionClosed" role="status" aria-live="polite">
+      <span>Sesi Anda sudah selesai</span>
+      <span class="bima-session-closed-powered">Powered by <span class="bima-session-closed-logo" id="bimaSessionClosedLogo"></span></span>
+    </div>
 
     <div id="bimaDiscovery">
     <div class="bima-section-label" id="bimaPopularLabel">Rekomendasi untuk Anda</div>
@@ -1289,10 +1302,13 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   var input=document.getElementById('bimaInput');
   var sendBtn=document.getElementById('bimaSend');
   var messages=document.getElementById('bimaMessages');
+  var closedLogo=document.getElementById('bimaSessionClosedLogo');
   var body=document.querySelector('#bimaPanel .bima-body');
   var statusDot=document.getElementById('bimaStatusDot');
   var statusLabel=document.getElementById('bimaStatusLabel');
   if(!fab||!panel||!closeBtn||!input||!sendBtn||!messages) return;
+  var brandLogo=document.querySelector('.brand img');
+  if(closedLogo&&brandLogo&&!closedLogo.firstChild){var poweredLogo=brandLogo.cloneNode(false);poweredLogo.alt='Vireqo';poweredLogo.removeAttribute('style');closedLogo.appendChild(poweredLogo);}
 
   var API_BASE=(window.BIMA_API_BASE||'https://bima-production-a580.up.railway.app').replace(/\/+$/,'');
   var SESSION_KEY='vireqo_bima_session_id';
@@ -1342,7 +1358,8 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   function clearIdleTimers(){if(idleReminderTimer){clearTimeout(idleReminderTimer);idleReminderTimer=null;}if(autoCloseTimer){clearTimeout(autoCloseTimer);autoCloseTimer=null;}}
   function clearHandoverTimer(){if(handoverCloseTimer){clearTimeout(handoverCloseTimer);handoverCloseTimer=null;}}
   function markSessionClosed(){clearIdleTimers();clearHandoverTimer();handoverFollowup=false;sessionClosed=true;panel.classList.add('chat-closed');input.placeholder=t().closedPlaceholder;scrollChat();}
-  function addMessage(role,text,extraClass){var el=document.createElement('div');el.className='bima-msg '+role+(extraClass?' '+extraClass:'');el.textContent=text;messages.appendChild(el);scrollChat();return el;}
+  function formatMessageTime(date){var locale=lang()==='en'?'en-GB':'id-ID';var value=new Intl.DateTimeFormat(locale,{timeZone:'Asia/Jakarta',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(date).replace(/\./g,':');return value+' WIB';}
+  function addMessage(role,text,extraClass){var el=document.createElement('div');el.className='bima-msg '+role+(extraClass?' '+extraClass:'');var messageText=document.createElement('span');messageText.className='bima-msg-text';messageText.textContent=text;el.appendChild(messageText);if((role==='user'||role==='assistant')&&extraClass!=='loading'){var now=new Date();var timestamp=document.createElement('time');timestamp.className='bima-msg-time';timestamp.dateTime=now.toISOString();timestamp.textContent=formatMessageTime(now);el.appendChild(timestamp);}messages.appendChild(el);scrollChat();return el;}
   function enterConversationMode(){panel.classList.add('chat-active');}
   function setOpen(open){panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',open?'false':'true');fab.setAttribute('aria-expanded',open?'true':'false');if(open)setTimeout(function(){input.focus();},120);}
   function setActiveService(service){activeService=service||'';document.querySelectorAll('[data-bima-service]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-bima-service')===activeService);});if(activeService){contextBox.textContent=t().context[activeService]||t().context.general;contextBox.classList.add('show');}else{contextBox.textContent=t().context.general;contextBox.classList.remove('show');}}
