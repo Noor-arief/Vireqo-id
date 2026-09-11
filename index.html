@@ -1324,6 +1324,8 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   var handoverCloseTimer=null;
   var activeService='';
   var backendOnline=null;
+  var healthFailureCount=0;
+  var HEALTH_FAILURE_THRESHOLD=2;
   var IDLE_REMINDER_MS=5*60*1000;
   var AUTO_CLOSE_MS=5*60*1000;
   var HANDOVER_CLOSE_MS=3*60*1000;
@@ -1336,6 +1338,7 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   function lang(){return document.documentElement.lang==='en'?'en':'id';}
   function t(){return copy[lang()];}
   function applyBackendStatus(isOnline){
+    if(isOnline)healthFailureCount=0;
     backendOnline=!!isOnline;
     if(statusDot){
       statusDot.classList.toggle('is-online',backendOnline);
@@ -1348,9 +1351,11 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   async function checkBackendHealth(){
     try{
       var response=await fetch(API_BASE+'/health',{method:'GET',cache:'no-store'});
-      applyBackendStatus(response.ok);
+      if(!response.ok)throw new Error('Health HTTP '+response.status);
+      applyBackendStatus(true);
     }catch(_){
-      applyBackendStatus(false);
+      healthFailureCount++;
+      if(healthFailureCount>=HEALTH_FAILURE_THRESHOLD)applyBackendStatus(false);
     }
   }
   function scrollChat(){if(body)setTimeout(function(){body.scrollTop=body.scrollHeight;},0);}
