@@ -1,0 +1,105 @@
+name: Mobile Hero Polish Once
+
+on:
+  push:
+    branches:
+      - mobile-hero-polish
+
+permissions:
+  contents: write
+
+jobs:
+  patch-mobile-hero:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: mobile-hero-polish
+
+      - name: Apply isolated mobile-only hero CSS
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          marker = '<style id="mobile-hero-polish">'
+          if marker in html:
+              raise SystemExit('Mobile hero polish already present; nothing to do.')
+
+          css = '''
+<style id="mobile-hero-polish">
+/* Mobile-only hero polish. No desktop, JS, BIMA, API, session, menu, or content changes. */
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 22px !important;
+  }
+
+  .hero .wrap {
+    padding-bottom: 40px !important;
+    gap: 24px !important;
+  }
+
+  .hero h1,
+  .hero .hero-title,
+  .hero-title {
+    font-size: clamp(32px, 9.2vw, 36px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.025em !important;
+    margin-top: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .hero p {
+    font-size: 15px !important;
+    line-height: 1.58 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .hero-vp {
+    gap: 8px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .hero-vp span {
+    gap: 8px !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+  }
+
+  .hero-cta {
+    gap: 8px !important;
+  }
+
+  .hero-cta .btn {
+    min-height: 46px !important;
+  }
+}
+</style>
+'''
+          closing = '</head>'
+          if closing not in html:
+              raise SystemExit('Could not find </head>; refusing to modify index.html.')
+          html = html.replace(closing, css + closing, 1)
+          path.write_text(html, encoding='utf-8')
+
+      - name: Verify scope
+        shell: bash
+        run: |
+          set -e
+          git diff --check
+          git diff -- index.html
+          test "$(git diff --name-only | tr -d '\r')" = "index.html"
+          grep -q 'id="mobile-hero-polish"' index.html
+
+      - name: Commit isolated patch
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Polish mobile hero spacing only [mobile-hero-patched]"
+          git push origin HEAD:mobile-hero-polish
