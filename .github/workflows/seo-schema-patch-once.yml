@@ -17,19 +17,24 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
           original=s
+          m=re.search(r'(<script type="application/ld\+json">)(.*?)(</script>)',s,re.S)
+          if not m:
+              raise SystemExit('JSON-LD block not found')
+          block=m.group(2)
           old_desc='Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard & training customer service, hingga penyediaan SDM CS. Konsultasi gratis.'
           new_desc='Vireqo adalah partner digital UMKM Indonesia untuk website profesional, dashboard customer service, training CS, dan Vireqo AI Client Assistant.'
           old_service='"name": "Penyediaan SDM Customer Service"'
           new_service='"name": "Vireqo AI Client Assistant"'
-          if s.count(old_desc) != 1:
-              raise SystemExit(f'JSON-LD description count mismatch: {s.count(old_desc)}')
-          if s.count(old_service) != 1:
-              raise SystemExit(f'JSON-LD service count mismatch: {s.count(old_service)}')
-          s=s.replace(old_desc,new_desc,1)
-          s=s.replace(old_service,new_service,1)
+          if block.count(old_desc) != 1:
+              raise SystemExit(f'JSON-LD description count mismatch inside block: {block.count(old_desc)}')
+          if block.count(old_service) != 1:
+              raise SystemExit(f'JSON-LD service count mismatch inside block: {block.count(old_service)}')
+          new_block=block.replace(old_desc,new_desc,1).replace(old_service,new_service,1)
+          s=s[:m.start(2)] + new_block + s[m.end(2):]
           if s==original:
               raise SystemExit('no changes made')
           p.write_text(s,encoding='utf-8')
@@ -39,9 +44,8 @@ jobs:
           set -e
           git diff --check
           test "$(git diff --name-only | tr -d '\r')" = "index.html"
-          ! grep -q 'hingga penyediaan SDM CS' index.html
-          ! grep -q '"name": "Penyediaan SDM Customer Service"' index.html
           grep -q '"name": "Vireqo AI Client Assistant"' index.html
+          grep -q '"description": "Vireqo adalah partner digital UMKM Indonesia untuk website profesional, dashboard customer service, training CS, dan Vireqo AI Client Assistant."' index.html
           grep -q "serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'}" index.html
           git diff --stat
       - name: Commit structured-data patch
