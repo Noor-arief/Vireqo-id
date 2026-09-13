@@ -1,0 +1,31 @@
+name: SEO Head Audit 2 Once
+on:
+  push:
+    branches: [seo-snippet-refresh]
+    paths: ['.github/workflows/seo-head-audit-2-once.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-snippet-refresh
+      - name: Print exact SEO metadata only
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          title=re.search(r'<title>(.*?)</title>',s,re.I|re.S)
+          print('TITLE=', title.group(1).strip() if title else '<missing>')
+          print('META=')
+          for tag in re.findall(r'<meta\b[^>]*>', s, re.I|re.S):
+              low=tag.lower()
+              if any(k in low for k in ['description','og:','twitter:','robots','keywords']):
+                  print(tag.replace('\n',' ').strip())
+          print('CANONICAL=')
+          for tag in re.findall(r'<link\b[^>]*>', s, re.I|re.S):
+              if 'canonical' in tag.lower():
+                  print(tag.replace('\n',' ').strip())
