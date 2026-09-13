@@ -1,0 +1,55 @@
+name: SEO Schema Patch Once
+on:
+  push:
+    branches: [seo-snippet-refresh]
+    paths: ['.github/workflows/seo-schema-patch-once.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-snippet-refresh
+      - name: Apply isolated structured-data patch
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          original=s
+          old_desc='Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard & training customer service, hingga penyediaan SDM CS. Konsultasi gratis.'
+          new_desc='Vireqo adalah partner digital UMKM Indonesia untuk website profesional, dashboard customer service, training CS, dan Vireqo AI Client Assistant.'
+          old_service='"name": "Penyediaan SDM Customer Service"'
+          new_service='"name": "Vireqo AI Client Assistant"'
+          if s.count(old_desc) != 1:
+              raise SystemExit(f'JSON-LD description count mismatch: {s.count(old_desc)}')
+          if s.count(old_service) != 1:
+              raise SystemExit(f'JSON-LD service count mismatch: {s.count(old_service)}')
+          s=s.replace(old_desc,new_desc,1)
+          s=s.replace(old_service,new_service,1)
+          if s==original:
+              raise SystemExit('no changes made')
+          p.write_text(s,encoding='utf-8')
+      - name: Verify isolated structured-data scope
+        shell: bash
+        run: |
+          set -e
+          git diff --check
+          test "$(git diff --name-only | tr -d '\r')" = "index.html"
+          ! grep -q 'hingga penyediaan SDM CS' index.html
+          ! grep -q '"name": "Penyediaan SDM Customer Service"' index.html
+          grep -q '"name": "Vireqo AI Client Assistant"' index.html
+          grep -q "serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'}" index.html
+          git diff --stat
+      - name: Commit structured-data patch
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Align Vireqo structured data with AI Client Assistant"
+          git push origin HEAD:seo-snippet-refresh
