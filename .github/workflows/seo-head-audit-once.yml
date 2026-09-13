@@ -18,14 +18,14 @@ jobs:
           from pathlib import Path
           import re
           s=Path('index.html').read_text(encoding='utf-8')
-          patterns={
-            'title': r'<title>(.*?)</title>',
-            'description': r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']\s*/?>',
-            'og:title': r'<meta\s+property=["\']og:title["\']\s+content=["\'](.*?)["\']\s*/?>',
-            'og:description': r'<meta\s+property=["\']og:description["\']\s+content=["\'](.*?)["\']\s*/?>',
-            'twitter:title': r'<meta\s+name=["\']twitter:title["\']\s+content=["\'](.*?)["\']\s*/?>',
-            'twitter:description': r'<meta\s+name=["\']twitter:description["\']\s+content=["\'](.*?)["\']\s*/?>',
-          }
-          for name,pat in patterns.items():
-              m=re.search(pat,s,re.I|re.S)
-              print(f'{name}={m.group(1).strip() if m else "<missing>"}')
+          title=re.search(r'<title>(.*?)</title>',s,re.I|re.S)
+          print('TITLE=', title.group(1).strip() if title else '<missing>')
+          print('RELEVANT META TAGS:')
+          for tag in re.findall(r'<meta\b[^>]*>', s, re.I|re.S):
+              low=tag.lower()
+              if any(k in low for k in ['description','og:','twitter:','robots','keywords']):
+                  print(tag.replace('\n',' ').strip())
+          print('CANONICAL:')
+          for tag in re.findall(r'<link\b[^>]*>', s, re.I|re.S):
+              if 'canonical' in tag.lower():
+                  print(tag.replace('\n',' ').strip())
