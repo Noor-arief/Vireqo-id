@@ -1,0 +1,89 @@
+name: Layout Spacing Mobile Fix Once
+
+on:
+  push:
+    branches:
+      - layout-spacing-mobile-fix
+
+permissions:
+  contents: write
+
+jobs:
+  patch-layout:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: layout-spacing-mobile-fix
+
+      - name: Apply targeted CSS only
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          marker = '<style id="layout-spacing-mobile-fix">'
+          if marker in html:
+              raise SystemExit('Targeted layout fix already present; nothing to do.')
+
+          css = '''
+<style id="layout-spacing-mobile-fix">
+/* Targeted corrections only: two desktop spacing issues + mobile hero checklist width. */
+@media (min-width: 641px) {
+  .trust + .section {
+    padding-top: 48px !important;
+  }
+
+  #tentang {
+    padding-top: 48px !important;
+    scroll-margin-top: 118px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-vp > span {
+    width: 100% !important;
+    padding-right: 0 !important;
+    align-items: flex-start !important;
+  }
+
+  .hero-vp > span > span {
+    display: block !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .hero-vp > span > svg {
+    margin-top: 2px !important;
+  }
+}
+</style>
+'''
+          closing = '</head>'
+          if closing not in html:
+              raise SystemExit('Could not find </head>; refusing to modify index.html.')
+          html = html.replace(closing, css + closing, 1)
+          path.write_text(html, encoding='utf-8')
+
+      - name: Verify scope
+        shell: bash
+        run: |
+          set -e
+          git diff --check
+          test "$(git diff --name-only | tr -d '\r')" = "index.html"
+          grep -q 'id="layout-spacing-mobile-fix"' index.html
+          git diff -- index.html
+
+      - name: Commit targeted patch
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Fix desktop spacing and mobile checklist width"
+          git push origin HEAD:layout-spacing-mobile-fix
