@@ -1,0 +1,41 @@
+name: BIMA diagnostic extract
+on:
+  push:
+    branches: [ai-client-assistant-card]
+    paths: ['.github/workflows/bima-diagnostic.yml']
+permissions:
+  contents: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract relevant BIMA snippets
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          needles = ['id="bimaDiscovery"','data-bima-service','serviceApiKey','var copy=','Penyediaan SDM CS','CS Staffing']
+          out=[]
+          for needle in needles:
+              out.append(f'===== {needle} =====')
+              start=0
+              count=0
+              while True:
+                  i=s.find(needle,start)
+                  if i<0: break
+                  count += 1
+                  a=max(0,i-1400); b=min(len(s),i+2600)
+                  out.append(s[a:b])
+                  start=i+len(needle)
+                  if count>=12: break
+              if count==0: out.append('NOT FOUND')
+          Path('bima-diagnostic.txt').write_text('\n\n'.join(out), encoding='utf-8')
+      - name: Commit diagnostic
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bima-diagnostic.txt
+          git commit -m 'Diagnostic: extract BIMA menu snippets' || exit 0
+          git push
