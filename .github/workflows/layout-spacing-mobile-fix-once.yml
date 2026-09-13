@@ -19,8 +19,9 @@ jobs:
           ref: layout-spacing-mobile-fix
 
       - name: Apply targeted CSS only
-        shell: python
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
 
           path = Path('index.html')
@@ -68,6 +69,7 @@ jobs:
               raise SystemExit('Could not find </head>; refusing to modify index.html.')
           html = html.replace(closing, css + closing, 1)
           path.write_text(html, encoding='utf-8')
+          PY
 
       - name: Verify scope
         shell: bash
