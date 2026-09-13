@@ -1,0 +1,31 @@
+name: SEO Head Audit Once
+on:
+  push:
+    branches: [seo-snippet-refresh]
+    paths: ['.github/workflows/seo-head-audit-once.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-snippet-refresh
+      - name: Print SEO head fields only
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text(encoding='utf-8')
+          patterns={
+            'title': r'<title>(.*?)</title>',
+            'description': r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']\s*/?>',
+            'og:title': r'<meta\s+property=["\']og:title["\']\s+content=["\'](.*?)["\']\s*/?>',
+            'og:description': r'<meta\s+property=["\']og:description["\']\s+content=["\'](.*?)["\']\s*/?>',
+            'twitter:title': r'<meta\s+name=["\']twitter:title["\']\s+content=["\'](.*?)["\']\s*/?>',
+            'twitter:description': r'<meta\s+name=["\']twitter:description["\']\s+content=["\'](.*?)["\']\s*/?>',
+          }
+          for name,pat in patterns.items():
+              m=re.search(pat,s,re.I|re.S)
+              print(f'{name}={m.group(1).strip() if m else "<missing>"}')
