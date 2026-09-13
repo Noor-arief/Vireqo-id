@@ -19,83 +19,32 @@ jobs:
           ref: mobile-hero-polish
 
       - name: Apply isolated mobile-only hero CSS
-        shell: python
+        env:
+          MOBILE_HERO_CSS_B64: PHN0eWxlIGlkPSJtb2JpbGUtaGVyby1wb2xpc2giPgovKiBNb2JpbGUtb25seSBoZXJvIHBvbGlzaC4gTm8gZGVza3RvcCwgSlMsIEJJTUEsIEFQSSwgc2Vzc2lvbiwgbWVudSwgb3IgY29udGVudCBjaGFuZ2VzLiAqLwpAbWVkaWEgKG1heC13aWR0aDogNjQwcHgpIHsKICAuaGVybyB7CiAgICBwYWRkaW5nLXRvcDogMjJweCAhaW1wb3J0YW50OwogIH0KICAuaGVybyAud3JhcCB7CiAgICBwYWRkaW5nLWJvdHRvbTogNDBweCAhaW1wb3J0YW50OwogICAgZ2FwOiAyNHB4ICFpbXBvcnRhbnQ7CiAgfQogIC5oZXJvIGgxLAogIC5oZXJvIC5oZXJvLXRpdGxlLAogIC5oZXJvLXRpdGxlIHsKICAgIGZvbnQtc2l6ZTogY2xhbXAoMzJweCwgOS4ydncsIDM2cHgpICFpbXBvcnRhbnQ7CiAgICBsaW5lLWhlaWdodDogMS4xMiAhaW1wb3J0YW50OwogICAgbGV0dGVyLXNwYWNpbmc6IC0wLjAyNWVtICFpbXBvcnRhbnQ7CiAgICBtYXJnaW4tdG9wOiAxNHB4ICFpbXBvcnRhbnQ7CiAgICBtYXJnaW4tYm90dG9tOiAxNHB4ICFpbXBvcnRhbnQ7CiAgfQogIC5oZXJvIHAgewogICAgZm9udC1zaXplOiAxNXB4ICFpbXBvcnRhbnQ7CiAgICBsaW5lLWhlaWdodDogMS41OCAhaW1wb3J0YW50OwogICAgbWFyZ2luLWJvdHRvbTogMjBweCAhaW1wb3J0YW50OwogIH0KICAuaGVyby12cCB7CiAgICBnYXA6IDhweCAhaW1wb3J0YW50OwogICAgbWFyZ2luLWJvdHRvbTogMjJweCAhaW1wb3J0YW50OwogIH0KICAuaGVyby12cCBzcGFuIHsKICAgIGdhcDogOHB4ICFpbXBvcnRhbnQ7CiAgICBmb250LXNpemU6IDEzcHggIWltcG9ydGFudDsKICAgIGxpbmUtaGVpZ2h0OiAxLjQ1ICFpbXBvcnRhbnQ7CiAgfQogIC5oZXJvLWN0YSB7CiAgICBnYXA6IDhweCAhaW1wb3J0YW50OwogIH0KICAuaGVyby1jdGEgLmJ0biB7CiAgICBtaW4taGVpZ2h0OiA0NnB4ICFpbXBvcnRhbnQ7CiAgfQp9Cjwvc3R5bGU+Cg==
         run: |
+          python - <<'PY'
           from pathlib import Path
-
+          import base64, os
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
           marker = '<style id="mobile-hero-polish">'
           if marker in html:
-              raise SystemExit('Mobile hero polish already present; nothing to do.')
-
-          css = '''
-<style id="mobile-hero-polish">
-/* Mobile-only hero polish. No desktop, JS, BIMA, API, session, menu, or content changes. */
-@media (max-width: 640px) {
-  .hero {
-    padding-top: 22px !important;
-  }
-
-  .hero .wrap {
-    padding-bottom: 40px !important;
-    gap: 24px !important;
-  }
-
-  .hero h1,
-  .hero .hero-title,
-  .hero-title {
-    font-size: clamp(32px, 9.2vw, 36px) !important;
-    line-height: 1.12 !important;
-    letter-spacing: -0.025em !important;
-    margin-top: 14px !important;
-    margin-bottom: 14px !important;
-  }
-
-  .hero p {
-    font-size: 15px !important;
-    line-height: 1.58 !important;
-    margin-bottom: 20px !important;
-  }
-
-  .hero-vp {
-    gap: 8px !important;
-    margin-bottom: 22px !important;
-  }
-
-  .hero-vp span {
-    gap: 8px !important;
-    font-size: 13px !important;
-    line-height: 1.45 !important;
-  }
-
-  .hero-cta {
-    gap: 8px !important;
-  }
-
-  .hero-cta .btn {
-    min-height: 46px !important;
-  }
-}
-</style>
-'''
-          closing = '</head>'
-          if closing not in html:
+              raise SystemExit('Mobile hero polish already present; refusing duplicate insertion.')
+          css = base64.b64decode(os.environ['MOBILE_HERO_CSS_B64']).decode('utf-8')
+          if '</head>' not in html:
               raise SystemExit('Could not find </head>; refusing to modify index.html.')
-          html = html.replace(closing, css + closing, 1)
-          path.write_text(html, encoding='utf-8')
+          path.write_text(html.replace('</head>', css + '</head>', 1), encoding='utf-8')
+          PY
 
       - name: Verify scope
-        shell: bash
         run: |
           set -e
           git diff --check
-          git diff -- index.html
           test "$(git diff --name-only | tr -d '\r')" = "index.html"
           grep -q 'id="mobile-hero-polish"' index.html
+          git diff --stat -- index.html
 
       - name: Commit isolated patch
-        shell: bash
         run: |
           set -e
           git config user.name "github-actions[bot]"
