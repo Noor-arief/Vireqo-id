@@ -1,0 +1,101 @@
+name: AI Client Card Once
+
+on:
+  push:
+    branches:
+      - ai-client-assistant-card
+
+permissions:
+  contents: write
+
+jobs:
+  patch-card:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ai-client-assistant-card
+      - name: Apply isolated AI Client Assistant card patch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          h = p.read_text(encoding='utf-8')
+
+          def rep(old, new, count=1):
+              global h
+              actual = h.count(old)
+              if actual != count:
+                  raise SystemExit(f'Expected {count} occurrence(s), found {actual}: {old[:100]!r}')
+              h = h.replace(old, new, count)
+
+          old_open = '''<div class="svc">
+<div class="svc-icon" style="background:var(--grad-amber);color:#fff;box-shadow:0 6px 16px rgba(245,166,35,.32)"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+<h3><span data-i18n="t61">Penyediaan SDM Customer Service</span></h3>'''
+          new_open = '''<div class="svc svc-ai-client">
+<div class="svc-ai-badges"><span class="svc-ai-new" data-i18n="t145">Baru</span><span class="svc-ai-recommended" data-i18n="t146">Sangat Direkomendasikan</span></div>
+<div class="svc-icon" style="background:linear-gradient(135deg,#253A65,#128C7E);color:#fff;box-shadow:0 6px 16px rgba(18,140,126,.24)"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"></rect><path d="M9 10h.01M15 10h.01M8 15h8M12 6V3M9.5 3h5"></path></svg></div>
+<h3><span data-i18n="t61">Vireqo AI Client Assistant</span></h3>'''
+          rep(old_open, new_open)
+          rep('<p><span data-i18n="t62">Butuh tenaga CS tapi belum siap merekrut dan melatih sendiri? Biar kami yang bantu carikan orangnya.</span></p>', '<p><span data-i18n="t62">Asisten AI untuk website bisnis Anda yang membantu menjawab pertanyaan pelanggan, menangkap lead, dan meneruskan percakapan ke tim saat dibutuhkan.</span></p>')
+          rep('<span data-i18n="t63">Kandidat CS yang sudah terlatih</span>', '<span data-i18n="t63">Nama, branding, knowledge, dan gaya komunikasi dapat disesuaikan</span>')
+          rep('<span data-i18n="t64">Disesuaikan dengan skala dan jam operasional bisnis</span>', '<span data-i18n="t64">Membantu pelanggan 24/7 dengan opsi handover ke tim manusia</span>')
+          rep('<span data-i18n="t65">Pendampingan di masa awal kerja</span>', '<span data-i18n="t65">Dikelola Vireqo dan didukung kemampuan BIMA Core</span>')
+
+          old_cta = '<a class="wa-link svc-cta" data-msg="Halo Vireqo, saya ingin konsultasi mengenai Penyediaan SDM Customer Service untuk bisnis saya." data-msg-key="m5" href="https://wa.me/6281912345611?text=Halo%20Vireqo%2C%20saya%20ingin%20konsultasi%20mengenai%20Penyediaan%20SDM%20Customer%20Service%20untuk%20bisnis%20saya." rel="noopener" target="_blank"><span data-i18n="t68">Konsultasikan Kebutuhan SDM Anda</span>'
+          new_cta = '<a class="wa-link svc-cta" data-msg="Halo Vireqo, saya ingin konsultasi mengenai Vireqo AI Client Assistant untuk bisnis saya." data-msg-key="m1" href="https://wa.me/6281912345611?text=Halo%20Vireqo%2C%20saya%20ingin%20konsultasi%20mengenai%20Vireqo%20AI%20Client%20Assistant%20untuk%20bisnis%20saya." rel="noopener" target="_blank"><span data-i18n="t68">Konsultasikan AI Assistant untuk Bisnis Anda</span>'
+          rep(old_cta, new_cta)
+
+          rep('"t61": "Penyediaan SDM Customer Service", "t62": "Butuh tenaga CS tapi belum siap merekrut dan melatih sendiri? Biar kami yang bantu carikan orangnya.", "t63": "Kandidat CS yang sudah terlatih", "t64": "Disesuaikan dengan skala dan jam operasional bisnis", "t65": "Pendampingan di masa awal kerja", "t68": "Konsultasikan Kebutuhan SDM Anda"', '"t61": "Vireqo AI Client Assistant", "t62": "Asisten AI untuk website bisnis Anda yang membantu menjawab pertanyaan pelanggan, menangkap lead, dan meneruskan percakapan ke tim saat dibutuhkan.", "t63": "Nama, branding, knowledge, dan gaya komunikasi dapat disesuaikan", "t64": "Membantu pelanggan 24/7 dengan opsi handover ke tim manusia", "t65": "Dikelola Vireqo dan didukung kemampuan BIMA Core", "t68": "Konsultasikan AI Assistant untuk Bisnis Anda"')
+          rep('"t61": "Customer Service Staffing", "t62": "Need CS agents but aren\'t ready to recruit and train them yourself? We\'ll help you find the right people.", "t63": "Pre-trained CS candidates", "t64": "Matched to your business scale and hours", "t65": "Onboarding support included", "t68": "Discuss Your Staffing Needs"', '"t61": "Vireqo AI Client Assistant", "t62": "An AI assistant for your business website that answers customer questions, captures leads, and hands conversations over to your team when needed.", "t63": "Customizable name, branding, knowledge, and communication style", "t64": "Helps customers 24/7 with human handover when needed", "t65": "Managed by Vireqo and powered by BIMA Core capabilities", "t68": "Discuss an AI Assistant for Your Business"')
+          rep('"t137": "Layanan Andalan Kami", "t140":', '"t137": "Layanan Andalan Kami", "t145": "Baru", "t146": "Sangat Direkomendasikan", "t140":')
+          rep('"t137": "Our Flagship Service", "t140":', '"t137": "Our Flagship Service", "t145": "New", "t146": "Highly Recommended", "t140":')
+
+          css = '''
+<style id="ai-client-card-presentation">
+/* Isolated presentation for the Vireqo AI Client Assistant card only. */
+.svc-ai-client{border-color:#BFDCD7;box-shadow:0 12px 30px rgba(18,140,126,.09)}
+.svc-ai-badges{position:absolute;top:-11px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;gap:8px;z-index:2;pointer-events:none}
+.svc-ai-new,.svc-ai-recommended{display:inline-flex;align-items:center;min-height:23px;padding:5px 9px;border-radius:6px;font-size:9.5px;font-weight:800;line-height:1;letter-spacing:.45px;text-transform:uppercase;white-space:nowrap}
+.svc-ai-new{background:#253A65;color:#fff}
+.svc-ai-recommended{background:#F5A623;color:#17223B}
+@media(max-width:640px){
+  .svc-ai-badges{left:16px;right:16px;gap:6px}
+  .svc-ai-new,.svc-ai-recommended{font-size:9px;padding:5px 8px}
+}
+@media(max-width:360px){
+  .svc-ai-badges{align-items:flex-start;flex-direction:column;right:auto}
+  .svc-ai-client{padding-top:38px}
+}
+</style>
+'''
+          if 'id="ai-client-card-presentation"' in h:
+              raise SystemExit('AI card CSS already present')
+          if '</head>' not in h:
+              raise SystemExit('Missing </head>')
+          h = h.replace('</head>', css + '</head>', 1)
+          p.write_text(h, encoding='utf-8')
+          PY
+      - name: Verify isolated scope
+        shell: bash
+        run: |
+          set -e
+          git diff --check
+          test "$(git diff --name-only | tr -d '\r')" = "index.html"
+          grep -q 'Vireqo AI Client Assistant' index.html
+          grep -q 'id="ai-client-card-presentation"' index.html
+          grep -q 'data-i18n="t145">Baru' index.html
+          grep -q 'data-i18n="t146">Sangat Direkomendasikan' index.html
+          grep -q '"t145": "New"' index.html
+          grep -q '"t146": "Highly Recommended"' index.html
+      - name: Commit product card patch
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Replace SDM card with AI Client Assistant"
+          git push origin HEAD:ai-client-assistant-card
