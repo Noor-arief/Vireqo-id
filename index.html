@@ -667,6 +667,38 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   }
 }
 </style>
+<style id="layout-spacing-mobile-fix">
+/* Targeted corrections only: two desktop spacing issues + mobile hero checklist width. */
+@media (min-width: 641px) {
+  .trust + .section {
+    padding-top: 48px !important;
+  }
+
+  #tentang {
+    padding-top: 48px !important;
+    scroll-margin-top: 118px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-vp > span {
+    width: 100% !important;
+    padding-right: 0 !important;
+    align-items: flex-start !important;
+  }
+
+  .hero-vp > span > span {
+    display: block !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .hero-vp > span > svg {
+    margin-top: 2px !important;
+  }
+}
+</style>
 </head>
 <body>
 <header id="siteHeader">
