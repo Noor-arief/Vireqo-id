@@ -28,12 +28,18 @@ jobs:
                   raise SystemExit(f'replace count mismatch {found} != {count}: {old[:120]!r}')
               s=s.replace(old,new,count)
           rep('id="bimaServiceStaffing">Penyediaan SDM Customer Service</button>','id="bimaServiceStaffing">Vireqo AI Client Assistant</button>')
-          rep('staffing:\'Penyediaan SDM Customer Service\',seo:', 'staffing:\'Vireqo AI Client Assistant\',seo:')
-          rep('staffing:\'Customer Service Staffing\',seo:', 'staffing:\'Vireqo AI Client Assistant\',seo:')
-          s,n=re.subn(r"staffing:'Anda memilih Penyediaan SDM Customer Service\.[^']*',seo:", "staffing:'Anda memilih Vireqo AI Client Assistant. BIMA akan mulai dari kebutuhan pelanggan, knowledge bisnis, gaya komunikasi, lead capture, dan kapan percakapan perlu diteruskan ke tim manusia.',seo:", s, count=1)
+          marker='var copy={'
+          if s.count(marker) != 1: raise SystemExit('copy marker mismatch')
+          head,tail=s.split(marker,1)
+          if tail.count("staffing:'Penyediaan SDM Customer Service',seo:") != 1: raise SystemExit('ID copy staffing mismatch')
+          if tail.count("staffing:'Customer Service Staffing',seo:") != 1: raise SystemExit('EN copy staffing mismatch')
+          tail=tail.replace("staffing:'Penyediaan SDM Customer Service',seo:","staffing:'Vireqo AI Client Assistant',seo:",1)
+          tail=tail.replace("staffing:'Customer Service Staffing',seo:","staffing:'Vireqo AI Client Assistant',seo:",1)
+          tail,n=re.subn(r"staffing:'Anda memilih Penyediaan SDM Customer Service\.[^']*',seo:", "staffing:'Anda memilih Vireqo AI Client Assistant. BIMA akan mulai dari kebutuhan pelanggan, knowledge bisnis, gaya komunikasi, lead capture, dan kapan percakapan perlu diteruskan ke tim manusia.',seo:", tail, count=1)
           if n != 1: raise SystemExit(f'ID staffing context replace count {n}')
-          s,n=re.subn(r"staffing:'You selected Customer Service Staffing\.[^']*',seo:", "staffing:'You selected Vireqo AI Client Assistant. BIMA will start with customer needs, business knowledge, communication style, lead capture, and when conversations should be handed over to your human team.',seo:", s, count=1)
+          tail,n=re.subn(r"staffing:'You selected Customer Service Staffing\.[^']*',seo:", "staffing:'You selected Vireqo AI Client Assistant. BIMA will start with customer needs, business knowledge, communication style, lead capture, and when conversations should be handed over to your human team.',seo:", tail, count=1)
           if n != 1: raise SystemExit(f'EN staffing context replace count {n}')
+          s=head+marker+tail
           rep('<span data-i18n="t94">Penyediaan SDM CS</span>','<span data-i18n="t94">Vireqo AI Client Assistant</span>')
           rep('"t94": "Penyediaan SDM CS"','"t94": "Vireqo AI Client Assistant"')
           rep('"t94": "CS Staffing"','"t94": "Vireqo AI Client Assistant"')
@@ -46,10 +52,12 @@ jobs:
           git diff --check
           test "$(git diff --name-only | tr -d '\r')" = "index.html"
           test "$(grep -o 'id="bimaServiceStaffing">Vireqo AI Client Assistant</button>' index.html | wc -l)" = "1"
-          grep -q "staffing:'Vireqo AI Client Assistant',seo:" index.html
-          grep -q '"t94": "Vireqo AI Client Assistant"' index.html
+          test "$(grep -o "staffing:'Vireqo AI Client Assistant',seo:" index.html | wc -l)" = "2"
+          test "$(grep -o '"t94": "Vireqo AI Client Assistant"' index.html | wc -l)" = "2"
           grep -q "serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'}" index.html
-          grep -q "staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO'" index.html
+          grep -q "serviceApiKey={dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO'}" index.html
+          grep -q "Anda memilih Vireqo AI Client Assistant" index.html
+          grep -q "You selected Vireqo AI Client Assistant" index.html
           git diff --stat
       - name: Commit patch
         shell: bash
