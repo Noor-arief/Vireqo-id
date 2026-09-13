@@ -1,0 +1,62 @@
+name: BIMA AI Menu Fix Once
+on:
+  push:
+    branches: [bima-ai-menu-fix]
+    paths: ['.github/workflows/bima-ai-menu-fix-once.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: bima-ai-menu-fix
+      - name: Apply isolated BIMA menu patch
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          original=s
+          def rep(old,new,count=1):
+              global s
+              found=s.count(old)
+              if found != count:
+                  raise SystemExit(f'replace count mismatch {found} != {count}: {old[:120]!r}')
+              s=s.replace(old,new,count)
+          rep('id="bimaServiceStaffing">Penyediaan SDM Customer Service</button>','id="bimaServiceStaffing">Vireqo AI Client Assistant</button>')
+          rep('staffing:\'Penyediaan SDM Customer Service\',seo:', 'staffing:\'Vireqo AI Client Assistant\',seo:')
+          rep('staffing:\'Customer Service Staffing\',seo:', 'staffing:\'Vireqo AI Client Assistant\',seo:')
+          s,n=re.subn(r"staffing:'Anda memilih Penyediaan SDM Customer Service\.[^']*',seo:", "staffing:'Anda memilih Vireqo AI Client Assistant. BIMA akan mulai dari kebutuhan pelanggan, knowledge bisnis, gaya komunikasi, lead capture, dan kapan percakapan perlu diteruskan ke tim manusia.',seo:", s, count=1)
+          if n != 1: raise SystemExit(f'ID staffing context replace count {n}')
+          s,n=re.subn(r"staffing:'You selected Customer Service Staffing\.[^']*',seo:", "staffing:'You selected Vireqo AI Client Assistant. BIMA will start with customer needs, business knowledge, communication style, lead capture, and when conversations should be handed over to your human team.',seo:", s, count=1)
+          if n != 1: raise SystemExit(f'EN staffing context replace count {n}')
+          rep('<span data-i18n="t94">Penyediaan SDM CS</span>','<span data-i18n="t94">Vireqo AI Client Assistant</span>')
+          rep('"t94": "Penyediaan SDM CS"','"t94": "Vireqo AI Client Assistant"')
+          rep('"t94": "CS Staffing"','"t94": "Vireqo AI Client Assistant"')
+          if s==original: raise SystemExit('no changes made')
+          p.write_text(s,encoding='utf-8')
+      - name: Verify isolated scope
+        shell: bash
+        run: |
+          set -e
+          git diff --check
+          test "$(git diff --name-only | tr -d '\r')" = "index.html"
+          test "$(grep -o 'id="bimaServiceStaffing">Vireqo AI Client Assistant</button>' index.html | wc -l)" = "1"
+          grep -q "staffing:'Vireqo AI Client Assistant',seo:" index.html
+          grep -q '"t94": "Vireqo AI Client Assistant"' index.html
+          grep -q "serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'}" index.html
+          grep -q "staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO'" index.html
+          git diff --stat
+      - name: Commit patch
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Show Vireqo AI Client Assistant in BIMA menu"
+          git push origin HEAD:bima-ai-menu-fix
