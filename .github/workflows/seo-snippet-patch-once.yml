@@ -1,0 +1,58 @@
+name: SEO Snippet Patch Once
+on:
+  push:
+    branches: [seo-snippet-refresh]
+    paths: ['.github/workflows/seo-snippet-patch-once.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-snippet-refresh
+      - name: Apply isolated SEO metadata patch
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          original=s
+          old_title='Vireqo | Jasa Website &amp; Customer Service UMKM Indonesia'
+          new_title='Vireqo | Website, Customer Service &amp; AI Assistant untuk UMKM'
+          old_desc='Vireqo adalah partner digital UMKM Indonesia: pembuatan website profesional, dashboard &amp; training customer service, hingga penyediaan SDM CS. Konsultasi gratis.'
+          new_desc='Vireqo adalah partner digital UMKM Indonesia untuk website profesional, dashboard customer service, training CS, dan Vireqo AI Client Assistant.'
+          def rep(old,new,count):
+              global s
+              found=s.count(old)
+              if found != count:
+                  raise SystemExit(f'replace count mismatch {found} != {count}: {old!r}')
+              s=s.replace(old,new,count)
+          rep(f'<title>{old_title}</title>',f'<title>{new_title}</title>',1)
+          rep(old_title,new_title,2)
+          rep(old_desc,new_desc,3)
+          if s==original:
+              raise SystemExit('no changes made')
+          p.write_text(s,encoding='utf-8')
+      - name: Verify isolated SEO scope
+        shell: bash
+        run: |
+          set -e
+          git diff --check
+          test "$(git diff --name-only | tr -d '\r')" = "index.html"
+          test "$(grep -o 'Vireqo | Website, Customer Service &amp; AI Assistant untuk UMKM' index.html | wc -l)" = "3"
+          test "$(grep -o 'Vireqo adalah partner digital UMKM Indonesia untuk website profesional, dashboard customer service, training CS, dan Vireqo AI Client Assistant.' index.html | wc -l)" = "3"
+          ! grep -q 'hingga penyediaan SDM CS' index.html
+          grep -q "serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'}" index.html
+          git diff --stat
+      - name: Commit SEO metadata patch
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Refresh Vireqo SEO metadata for AI Client Assistant"
+          git push origin HEAD:seo-snippet-refresh
