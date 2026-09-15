@@ -16,71 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Inject safe BIMA markdown formatter
+        env:
+          BIMA_FORMATTER_B64: PCEtLSBCSU1BX0NIQVRfRk9STUFUVEVSX1YxIC0tPgo8c2NyaXB0PgooZnVuY3Rpb24oKXsKICBmdW5jdGlvbiBpc0JpbWFBcmVhKGVsKXsKICAgIHJldHVybiAhIShlbCAmJiBlbC5jbG9zZXN0ICYmIGVsLmNsb3Nlc3QoJ1tpZCo9ImJpbWEiIGldLCBbY2xhc3MqPSJiaW1hIiBpXScpKTsKICB9CiAgZnVuY3Rpb24gZm9ybWF0VGV4dE5vZGUobm9kZSl7CiAgICBpZighbm9kZSB8fCBub2RlLm5vZGVUeXBlICE9PSBOb2RlLlRFWFRfTk9ERSB8fCAhbm9kZS5ub2RlVmFsdWUgfHwgIW5vZGUubm9kZVZhbHVlLmluY2x1ZGVzKCcqKicpKSByZXR1cm47CiAgICB2YXIgcGFyZW50PW5vZGUucGFyZW50RWxlbWVudDsKICAgIGlmKCFwYXJlbnQgfHwgIWlzQmltYUFyZWEocGFyZW50KSB8fCBwYXJlbnQuY2xvc2VzdCgnc2NyaXB0LHN0eWxlLHRleHRhcmVhLGlucHV0JykpIHJldHVybjsKICAgIHZhciB0ZXh0PW5vZGUubm9kZVZhbHVlLCByZT0vXCpcKihbXipcbl0rKVwqXCovZzsKICAgIGlmKCFyZS50ZXN0KHRleHQpKSByZXR1cm47CiAgICByZS5sYXN0SW5kZXg9MDsKICAgIHZhciBmcmFnPWRvY3VtZW50LmNyZWF0ZURvY3VtZW50RnJhZ21lbnQoKSwgbGFzdD0wLCBtOwogICAgd2hpbGUoKG09cmUuZXhlYyh0ZXh0KSkhPT1udWxsKXsKICAgICAgaWYobS5pbmRleD5sYXN0KSBmcmFnLmFwcGVuZENoaWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKHRleHQuc2xpY2UobGFzdCxtLmluZGV4KSkpOwogICAgICB2YXIgc3Ryb25nPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3N0cm9uZycpOwogICAgICBzdHJvbmcudGV4dENvbnRlbnQ9bVsxXTsKICAgICAgZnJhZy5hcHBlbmRDaGlsZChzdHJvbmcpOwogICAgICBsYXN0PW0uaW5kZXgrbVswXS5sZW5ndGg7CiAgICB9CiAgICBpZihsYXN0PHRleHQubGVuZ3RoKSBmcmFnLmFwcGVuZENoaWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKHRleHQuc2xpY2UobGFzdCkpKTsKICAgIG5vZGUucGFyZW50Tm9kZS5yZXBsYWNlQ2hpbGQoZnJhZyxub2RlKTsKICB9CiAgZnVuY3Rpb24gZm9ybWF0VHJlZShyb290KXsKICAgIGlmKCFyb290KSByZXR1cm47CiAgICBpZihyb290Lm5vZGVUeXBlPT09Tm9kZS5URVhUX05PREUpe2Zvcm1hdFRleHROb2RlKHJvb3QpO3JldHVybjt9CiAgICBpZihyb290Lm5vZGVUeXBlIT09Tm9kZS5FTEVNRU5UX05PREUgJiYgcm9vdC5ub2RlVHlwZSE9PU5vZGUuRE9DVU1FTlRfTk9ERSkgcmV0dXJuOwogICAgdmFyIHdhbGtlcj1kb2N1bWVudC5jcmVhdGVUcmVlV2Fsa2VyKHJvb3QsTm9kZUZpbHRlci5TSE9XX1RFWFQpLG5vZGVzPVtdLG47CiAgICB3aGlsZSgobj13YWxrZXIubmV4dE5vZGUoKSkpIG5vZGVzLnB1c2gobik7CiAgICBub2Rlcy5mb3JFYWNoKGZvcm1hdFRleHROb2RlKTsKICB9CiAgZnVuY3Rpb24gc3RhcnQoKXsKICAgIGZvcm1hdFRyZWUoZG9jdW1lbnQpOwogICAgbmV3IE11dGF0aW9uT2JzZXJ2ZXIoZnVuY3Rpb24ocmVjb3Jkcyl7CiAgICAgIHJlY29yZHMuZm9yRWFjaChmdW5jdGlvbihyZWNvcmQpewogICAgICAgIGlmKHJlY29yZC50eXBlPT09J2NoYXJhY3RlckRhdGEnKSBmb3JtYXRUZXh0Tm9kZShyZWNvcmQudGFyZ2V0KTsKICAgICAgICByZWNvcmQuYWRkZWROb2RlcyAmJiByZWNvcmQuYWRkZWROb2Rlcy5mb3JFYWNoKGZvcm1hdFRyZWUpOwogICAgICB9KTsKICAgIH0pLm9ic2VydmUoZG9jdW1lbnQuYm9keSx7c3VidHJlZTp0cnVlLGNoaWxkTGlzdDp0cnVlLGNoYXJhY3RlckRhdGE6dHJ1ZX0pOwogIH0KICBpZihkb2N1bWVudC5yZWFkeVN0YXRlPT09J2xvYWRpbmcnKSBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJyxzdGFydCx7b25jZTp0cnVlfSk7IGVsc2Ugc3RhcnQoKTsKfSkoKTsKPC9zY3JpcHQ+Cg==
         run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path('index.html')
-          html = path.read_text(encoding='utf-8')
-          marker = '<!-- BIMA_CHAT_FORMATTER_V1 -->'
-          if marker in html:
-              print('Formatter already present; nothing to change.')
-              raise SystemExit(0)
-          if '</body>' not in html:
-              raise SystemExit('Safety stop: </body> not found.')
-
-          script = r'''<!-- BIMA_CHAT_FORMATTER_V1 -->
-<script>
-(function(){
-  function isBimaArea(el){
-    return !!(el && el.closest && el.closest('[id*="bima" i], [class*="bima" i]'));
-  }
-  function formatTextNode(node){
-    if(!node || node.nodeType !== Node.TEXT_NODE || !node.nodeValue || !node.nodeValue.includes('**')) return;
-    var parent = node.parentElement;
-    if(!parent || !isBimaArea(parent) || parent.closest('script,style,textarea,input')) return;
-    var text = node.nodeValue;
-    var re = /\*\*([^*\n]+)\*\*/g;
-    if(!re.test(text)) return;
-    re.lastIndex = 0;
-    var frag = document.createDocumentFragment(), last = 0, m;
-    while((m = re.exec(text)) !== null){
-      if(m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
-      var strong = document.createElement('strong');
-      strong.textContent = m[1];
-      frag.appendChild(strong);
-      last = m.index + m[0].length;
-    }
-    if(last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
-    node.parentNode.replaceChild(frag, node);
-  }
-  function formatTree(root){
-    if(!root) return;
-    if(root.nodeType === Node.TEXT_NODE){ formatTextNode(root); return; }
-    if(root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE) return;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-    var nodes = [], n;
-    while((n = walker.nextNode())) nodes.push(n);
-    nodes.forEach(formatTextNode);
-  }
-  function start(){
-    formatTree(document);
-    new MutationObserver(function(records){
-      records.forEach(function(record){
-        if(record.type === 'characterData') formatTextNode(record.target);
-        record.addedNodes && record.addedNodes.forEach(formatTree);
-      });
-    }).observe(document.body, {subtree:true, childList:true, characterData:true});
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
-  else start();
-})();
-</script>
-'''
-          html = html.replace('</body>', script + '\n</body>', 1)
-          path.write_text(html, encoding='utf-8')
-          print('BIMA safe markdown formatter injected.')
-          PY
+          python -c "import os,base64,pathlib; p=pathlib.Path('index.html'); h=p.read_text(encoding='utf-8'); m='<!-- BIMA_CHAT_FORMATTER_V1 -->'; s=base64.b64decode(os.environ['BIMA_FORMATTER_B64']).decode(); assert '</body>' in h, 'Safety stop: </body> not found'; p.write_text(h if m in h else h.replace('</body>',s+'\n</body>',1),encoding='utf-8')"
       - name: Commit frontend patch
         run: |
           if git diff --quiet -- index.html; then
