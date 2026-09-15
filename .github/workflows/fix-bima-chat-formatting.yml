@@ -1,0 +1,94 @@
+name: Fix BIMA chat formatting
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-bima-chat-formatting.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject safe BIMA markdown formatter
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          marker = '<!-- BIMA_CHAT_FORMATTER_V1 -->'
+          if marker in html:
+              print('Formatter already present; nothing to change.')
+              raise SystemExit(0)
+          if '</body>' not in html:
+              raise SystemExit('Safety stop: </body> not found.')
+
+          script = r'''<!-- BIMA_CHAT_FORMATTER_V1 -->
+<script>
+(function(){
+  function isBimaArea(el){
+    return !!(el && el.closest && el.closest('[id*="bima" i], [class*="bima" i]'));
+  }
+  function formatTextNode(node){
+    if(!node || node.nodeType !== Node.TEXT_NODE || !node.nodeValue || !node.nodeValue.includes('**')) return;
+    var parent = node.parentElement;
+    if(!parent || !isBimaArea(parent) || parent.closest('script,style,textarea,input')) return;
+    var text = node.nodeValue;
+    var re = /\*\*([^*\n]+)\*\*/g;
+    if(!re.test(text)) return;
+    re.lastIndex = 0;
+    var frag = document.createDocumentFragment(), last = 0, m;
+    while((m = re.exec(text)) !== null){
+      if(m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      var strong = document.createElement('strong');
+      strong.textContent = m[1];
+      frag.appendChild(strong);
+      last = m.index + m[0].length;
+    }
+    if(last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+  function formatTree(root){
+    if(!root) return;
+    if(root.nodeType === Node.TEXT_NODE){ formatTextNode(root); return; }
+    if(root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE) return;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    var nodes = [], n;
+    while((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(formatTextNode);
+  }
+  function start(){
+    formatTree(document);
+    new MutationObserver(function(records){
+      records.forEach(function(record){
+        if(record.type === 'characterData') formatTextNode(record.target);
+        record.addedNodes && record.addedNodes.forEach(formatTree);
+      });
+    }).observe(document.body, {subtree:true, childList:true, characterData:true});
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
+  else start();
+})();
+</script>
+'''
+          html = html.replace('</body>', script + '\n</body>', 1)
+          path.write_text(html, encoding='utf-8')
+          print('BIMA safe markdown formatter injected.')
+          PY
+      - name: Commit frontend patch
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No index.html change required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Render BIMA bold markdown safely"
+          git push
