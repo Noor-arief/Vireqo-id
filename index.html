@@ -708,6 +708,42 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
 @media(max-width:640px){.svc-ai-badges{left:16px;right:16px;gap:6px}.svc-ai-new,.svc-ai-recommended{font-size:9px;padding:5px 8px}}
 @media(max-width:360px){.svc-ai-badges{align-items:flex-start;flex-direction:column;right:auto}.svc-ai-client{padding-top:38px}}
 </style>
+
+<style id="bima-chat-responsive-fix">
+/* BIMA_CHAT_RESPONSIVE_FIX_2026_09_18
+   Scoped to BIMA only. Desktop + mobile chat geometry; no site-wide layout changes. */
+.bima-panel{width:min(410px,calc(100vw - 32px));height:min(560px,calc(100dvh - 120px));max-height:min(560px,calc(100dvh - 120px))}
+.bima-panel .bima-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px}
+.bima-panel.chat-active .bima-body{display:flex;flex-direction:column}
+.bima-panel.chat-active .bima-messages{flex:1 1 auto;padding-top:8px;margin-top:0}
+.bima-panel .bima-msg{max-width:84%;padding:10px 12px;line-height:1.5}
+.bima-panel .bima-input-wrap{padding:10px;gap:8px}
+.bima-panel .bima-input{min-height:42px;padding:10px 11px}
+.bima-panel .bima-send{width:42px;height:42px}
+@media (max-width:600px){
+  .bima-panel{top:auto;left:10px;right:10px;bottom:72px;width:auto;height:min(560px,calc(100dvh - 96px));max-height:min(560px,calc(100dvh - 96px));border-radius:18px}
+  .bima-panel .bima-head{padding:10px 12px;min-height:64px;gap:10px}
+  .bima-panel .bima-avatar{width:42px;height:42px;border-radius:13px}
+  .bima-panel .bima-avatar img{width:51px;height:51px}
+  .bima-panel .bima-head-title{font-size:15px}
+  .bima-panel .bima-head-sub{font-size:10.5px;margin-top:2px}
+  .bima-panel .bima-online{font-size:10px;margin-top:3px}
+  .bima-panel .bima-close{width:34px;height:34px}
+  .bima-panel .bima-body{padding:12px}
+  .bima-panel .bima-msg{max-width:88%;font-size:12.5px;padding:9px 11px}
+  .bima-panel.chat-active .bima-messages{padding-top:4px;gap:8px}
+  .bima-panel .bima-input-wrap{padding:9px}
+  .bima-panel .bima-input{font-size:13px;min-height:42px}
+  .bima-panel .bima-send{width:42px;height:42px}
+}
+@media (max-width:390px){
+  .bima-panel{left:8px;right:8px;bottom:66px;height:min(540px,calc(100dvh - 84px));max-height:min(540px,calc(100dvh - 84px))}
+  .bima-panel .bima-head{padding:9px 10px}
+  .bima-panel .bima-body{padding:10px}
+  .bima-panel .bima-msg{max-width:90%}
+}
+</style>
+
 </head>
 <body>
 <header id="siteHeader">
@@ -1413,7 +1449,7 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
   var AUTO_CLOSE_MS=5*60*1000;
   var HANDOVER_CLOSE_MS=3*60*1000;
   var serviceFromMsgKey={m2:'website',m3:'dashboard',m4:'training',m5:'staffing',m6:'cs',m7:'seo'};
-  var serviceApiKey={dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Penyediaan SDM Customer Service',seo:'Konsultasi SEO'};
+  var serviceApiKey={dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Vireqo AI Client Assistant',seo:'Konsultasi SEO'};
   var copy={
     id:{subtitle:'Vireqo AI Client Assistant',status:'Siap membantu konsultasi',title:'Halo! Saya BIMA.',greeting:'Ceritakan kebutuhan bisnis Anda. Saya akan membantu menentukan layanan Vireqo yang paling sesuai.',popular:'Rekomendasi untuk Anda',popularBadge:'Rekomendasi kami',other:'Layanan lainnya',dashboard:'Dashboard Customer Service',website:'Website & Landing Page',cs:'Konsultasi Customer Service',training:'Training Customer Service',staffing:'Vireqo AI Client Assistant',seo:'Konsultasi SEO',coming:'Chat BIMA aktif. Pilih layanan atau tulis kebutuhan Anda langsung.',placeholder:'Ketik pesan untuk BIMA...',closedPlaceholder:'Sesi telah berakhir. Kirim pesan baru untuk memulai sesi baru.',open:'Buka Ask BIMA',close:'Tutup Ask BIMA',handoverTitle:'Siap lanjut dengan tim Vireqo?',handoverCopy:'Setelah konsultasi selesai, BIMA akan menyiapkan ringkasan kebutuhan Anda sebelum diteruskan ke WhatsApp.',wa:'WhatsApp Vireqo',send:'Kirim pesan',loading:'BIMA sedang mengetik...',offline:'BIMA sedang tidak dapat dihubungi. Anda tetap bisa melanjutkan melalui WhatsApp Vireqo.',context:{general:'Saya akan bantu memahami kebutuhan Anda terlebih dahulu sebelum diteruskan ke tim Vireqo.',dashboard:'Anda memilih Dashboard Customer Service. BIMA akan mulai dari kebutuhan monitoring, metrik, workflow, dan kondisi tim CS Anda saat ini.',website:'Anda memilih Website & Landing Page. BIMA akan mulai dari tujuan website, target pelanggan, fitur utama, dan kebutuhan bisnis Anda.',cs:'Anda memilih Konsultasi Customer Service. BIMA akan mulai dari masalah layanan pelanggan dan proses CS yang berjalan saat ini.',training:'Anda memilih Training Customer Service. BIMA akan mulai dari profil peserta, tantangan tim, dan materi yang paling dibutuhkan.',staffing:'Anda memilih Vireqo AI Client Assistant. BIMA akan mulai dari kebutuhan pelanggan, knowledge bisnis, gaya komunikasi, lead capture, dan kapan percakapan perlu diteruskan ke tim manusia.',seo:'Anda memilih Konsultasi SEO. BIMA akan mulai dari website atau bisnis Anda saat ini, target pencarian, dan tujuan optimasi.'}},
     en:{subtitle:'Vireqo AI Client Assistant',status:'Ready to help with consultation',title:"Hi! I'm BIMA.",greeting:'Tell me what your business needs. I’ll help identify the most suitable Vireqo service.',popular:'Recommended for you',popularBadge:'Our recommendation',other:'Other services',dashboard:'Customer Service Dashboard',website:'Website & Landing Page',cs:'Customer Service Consulting',training:'Customer Service Training',staffing:'Vireqo AI Client Assistant',seo:'SEO Consulting',coming:'BIMA chat is active. Choose a service or type your needs directly.',placeholder:'Type a message to BIMA...',closedPlaceholder:'This session has ended. Send a new message to start a new session.',open:'Open Ask BIMA',close:'Close Ask BIMA',handoverTitle:'Ready to continue with the Vireqo team?',handoverCopy:'After the consultation, BIMA will prepare a summary of your needs before handing you over to WhatsApp.',wa:'WhatsApp Vireqo',send:'Send message',loading:'BIMA is typing...',offline:'BIMA is currently unavailable. You can still continue via Vireqo WhatsApp.',context:{general:'I’ll first help understand your needs before handing you over to the Vireqo team.',dashboard:'You selected the Customer Service Dashboard. BIMA will start with your monitoring needs, metrics, workflow, and current CS team setup.',website:'You selected Website & Landing Page. BIMA will start with your website goals, target customers, core features, and business needs.',cs:'You selected Customer Service Consulting. BIMA will start with your current customer-service challenges and workflow.',training:'You selected Customer Service Training. BIMA will start with participant profiles, team challenges, and the most relevant training topics.',staffing:'You selected Vireqo AI Client Assistant. BIMA will start with customer needs, business knowledge, communication style, lead capture, and when conversations should be handed over to your human team.',seo:'You selected SEO Consulting. BIMA will start with your current website or business, search targets, and optimization goals.'}}
