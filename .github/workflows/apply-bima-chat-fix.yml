@@ -1,0 +1,53 @@
+name: Apply BIMA chat responsive fix
+
+on:
+  push:
+    branches:
+      - fix-bima-chat-responsive-service-context
+    paths:
+      - '.github/workflows/apply-bima-chat-fix.yml'
+      - 'tools/fix_bima_chat_ui.py'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-bima-chat-responsive-service-context
+          fetch-depth: 0
+      - name: Patch exact branch index
+        run: python tools/fix_bima_chat_ui.py
+      - name: Static acceptance checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          checks={
+            'responsive marker':'BIMA_CHAT_RESPONSIVE_FIX_2026_09_18' in s,
+            'AI service label':'>Vireqo AI Client Assistant</button>' in s,
+            'AI service API mapping':"staffing:'Vireqo AI Client Assistant'" in s,
+            'old ID button gone':'>Penyediaan SDM Customer Service</button>' not in s,
+            'old EN button gone':'>Customer Service Staffing</button>' not in s,
+            'desktop bounded height':'height:min(560px,calc(100dvh - 120px))' in s,
+            'mobile bounded height':'height:min(560px,calc(100dvh - 96px))' in s,
+            'body flex scroll':'flex:1 1 auto' in s and 'overflow-y:auto' in s,
+          }
+          failed=[k for k,v in checks.items() if not v]
+          print(checks)
+          if failed: raise SystemExit('FAILED: '+', '.join(failed))
+          PY
+      - name: Commit patched index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'index.html already patched'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Fix BIMA chat responsive layout and AI service context'
+          git push origin HEAD:fix-bima-chat-responsive-service-context
