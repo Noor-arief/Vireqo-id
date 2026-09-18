@@ -1644,7 +1644,17 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
         .replace(/\s+/g,' ')
         .trim();
 
+      var normalizedUserMessage=message
+        .toLowerCase()
+        .replace(/[*_`~]/g,' ')
+        .replace(/\s+/g,' ')
+        .trim();
+      var userRequestedWhatsApp =
+        normalizedUserMessage.includes('whatsapp') ||
+        /(^|\s)wa(\s|$)/.test(normalizedUserMessage);
+
       var shouldShowWhatsApp =
+        userRequestedWhatsApp ||
         normalizedAnswer.includes('lanjut via whatsapp') ||
         normalizedAnswer.includes('lanjut melalui whatsapp') ||
         normalizedAnswer.includes('lanjut ke whatsapp') ||
