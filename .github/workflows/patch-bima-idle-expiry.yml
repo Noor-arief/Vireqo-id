@@ -1,10 +1,11 @@
 name: Patch BIMA idle expiry
 on:
   push:
-    branches: [fix-bima-idle-session-expiry]
+    branches:
+      - fix-bima-idle-session-expiry
 jobs:
   patch:
-    if: github.event.head_commit.message == 'Add idle expiry patch workflow'
+    if: github.event.head_commit.message != 'Fix BIMA idle session expiry after suspended tabs'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -42,8 +43,7 @@ jobs:
   function scheduleIdleFlow(){
     clearIdleTimers();
     if(!sessionId||sessionClosed||handoverFollowup)return;
-    var now=Date.now();
-    var deadline=now+IDLE_REMINDER_MS+AUTO_CLOSE_MS;
+    var deadline=Date.now()+IDLE_REMINDER_MS+AUTO_CLOSE_MS;
     sessionStorage.setItem(IDLE_DEADLINE_KEY,String(deadline));
     idleReminderTimer=setTimeout(async function(){
       try{var data=await postSessionEvent('idle_reminder');if(data&&data.message)addMessage('assistant',data.message);}catch(error){console.error('BIMA idle reminder error:',error);}
@@ -59,9 +59,7 @@ jobs:
   window.addEventListener('focus',enforceIdleDeadline);
   window.addEventListener('pageshow',enforceIdleDeadline);"""
           if old not in s: raise SystemExit("target scheduleIdleFlow not found")
-          s=s.replace(old,new,1)
-          s=s.replace("sessionStorage.removeItem(NAME_KEY);","sessionStorage.removeItem(NAME_KEY);\n    sessionStorage.removeItem(IDLE_DEADLINE_KEY);",1)
-          p.write_text(s)
+          p.write_text(s.replace(old,new,1).replace("sessionStorage.removeItem(NAME_KEY);","sessionStorage.removeItem(NAME_KEY);\n    sessionStorage.removeItem(IDLE_DEADLINE_KEY);",1))
           PY
       - run: |
           git config user.name "github-actions[bot]"
