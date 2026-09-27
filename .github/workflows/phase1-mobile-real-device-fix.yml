@@ -1,0 +1,89 @@
+name: Phase 1 Mobile Real Device Fix
+'on':
+  push:
+    branches:
+      - phase1-mobile-real-device-fix
+permissions:
+  contents: write
+jobs:
+  mobile-fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply mobile-only CSS patch
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8-sig')
+          marker='''<style id="phase1-mobile-real-device-polish">
+          /* Real-device mobile correction 27 Sep 2026. Mobile only. Desktop Hero is locked. */
+          @media (max-width:640px){
+            .nav{min-height:58px!important;padding:7px 16px!important;gap:10px!important}
+            .brand img{height:31px!important;width:auto!important}
+            .nav-cta{display:none!important}
+            .hamburger{margin-left:auto!important;padding:7px!important}
+            .mobile-menu{padding:6px 16px 14px!important;gap:0!important}
+            .mobile-menu a{padding:10px 2px!important;font-size:14px!important}
+            .mobile-menu .mm-actions{display:grid!important;grid-template-columns:48px minmax(0,1fr)!important;gap:8px!important;margin-top:10px!important;align-items:stretch!important}
+            .mobile-menu .mm-actions .lang-toggle{width:48px!important;min-width:48px!important;height:42px!important;padding:0!important}
+            .mobile-menu .mm-actions .btn{width:100%!important;min-width:0!important;min-height:42px!important;padding:9px 12px!important;font-size:12.5px!important;line-height:1.15!important;white-space:nowrap!important}
+            .hero{padding-top:14px!important}
+            .hero>.wrap,.hero .wrap{gap:14px!important;padding-bottom:24px!important}
+            .hero h1,.hero .hero-title,.hero-title{font-size:clamp(30px,8.4vw,34px)!important;line-height:1.08!important;letter-spacing:-.025em!important;margin:0 0 10px!important}
+            .hero p{font-size:13.5px!important;line-height:1.48!important;margin-bottom:12px!important}
+            .hero-vp{gap:5px!important;margin-bottom:14px!important}
+            .hero-vp span{font-size:12px!important;line-height:1.35!important}
+            .hero-vp>span>svg{width:15px!important;height:15px!important;min-width:15px!important;margin-top:1px!important}
+            .hero-cta{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
+            .hero-cta .btn{min-height:42px!important;padding:9px 8px!important;font-size:11.5px!important;line-height:1.2!important;text-align:center!important}
+            .hero-visual.issue123-approved-hero{margin:10px 0 0!important;width:100%!important}
+            .hero-visual.issue123-approved-hero img{width:100%!important;height:auto!important}
+          }
+          @media (max-width:360px){
+            .hero-cta{grid-template-columns:1fr!important}
+            .mobile-menu .mm-actions .btn{font-size:11.5px!important}
+          }
+          </style>'''
+          import re
+          s=re.sub(r'<style id="phase1-mobile-real-device-polish">.*?</style>\s*','',s,flags=re.S)
+          pos=s.lower().rfind('</head>')
+          if pos<0: raise SystemExit('head close missing')
+          s=s[:pos]+marker+'\n'+s[pos:]
+          p.write_text(s,encoding='utf-8',newline='')
+      - name: Install browser test
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --save-dev playwright@1.55.0 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Validate mobile layout and capture screenshots
+        run: |
+          python3 -m http.server 8080 >/tmp/vireqo-http.log 2>&1 &
+          cat > mobile-check.js <<'JS'
+          const { chromium }=require('playwright'); const assert=require('assert');
+          (async()=>{const b=await chromium.launch({headless:true});
+          for(const [w,h,n] of [[360,800,'360'],[390,844,'390'],[412,915,'412']]){const p=await b.newPage({viewport:{width:w,height:h},isMobile:true});await p.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
+          const nav=await p.locator('.nav').boundingBox();assert(nav&&nav.height<=62,`nav too tall ${w}: ${nav&&nav.height}`);
+          assert(await p.locator('#hamburgerBtn').isVisible(),`hamburger hidden ${w}`);await p.locator('#hamburgerBtn').click();await p.waitForTimeout(100);
+          const menu=await p.locator('#mobileMenu').boundingBox();assert(menu&&menu.width<=w,`menu overflow ${w}`);const cta=await p.locator('#mobileMenu .mm-actions .btn').boundingBox();assert(cta&&cta.x+cta.width<=w,`menu CTA overflow ${w}`);
+          await p.locator('#hamburgerBtn').click();const hero=await p.locator('.hero').boundingBox();const art=await p.locator('.hero-visual.issue123-approved-hero img').boundingBox();assert(art&&art.width>=w-50,`art too small ${w}`);assert(hero&&hero.height<900,`hero too tall ${w}: ${hero&&hero.height}`);await p.screenshot({path:`mobile-${n}.png`,fullPage:false});await p.close();}
+          await b.close();console.log('PASS mobile real-device geometry 360/390/412');})().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node mobile-check.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase1-mobile-screenshots
+          path: mobile-*.png
+      - name: Commit mobile-only patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --check
+          git commit -m "fix: compact Phase 1 mobile header menu and hero"
+          git push
