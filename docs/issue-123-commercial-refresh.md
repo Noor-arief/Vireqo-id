@@ -16,7 +16,7 @@ Working branch: `issue-123-vireqo-commercial-refresh`
 
 ## Locked commercial baseline
 Four product cards only:
-1. Website & Landing Page — base Rp1.500.000.
+1. Website & Landing Page — public starter pricing mulai Rp799.000; requirements outside the standard starter scope use a Custom Quote.
 2. CS Dashboard — base Rp1.500.000; external database/hosting/services such as Supabase are not included and are quoted separately when needed.
 3. Vireqo AI Client Assistant — subscription-based; plan/pricing follows the AI Assistant subscription baseline.
 4. Website + AI Client Assistant bundle — website build fee plus the selected AI Assistant subscription; domain is excluded.
