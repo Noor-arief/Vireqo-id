@@ -1789,6 +1789,35 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
 </script>
 
 
+<style id="phase8-section-rhythm">
+/* Phase 8.4 — restrained section rhythm only; no content/order/behavior changes. */
+main{position:relative;overflow:clip}
+main>.section{position:relative;isolation:isolate}
+main>.section:not(#cara-kerja)::before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:999px;
+  width:min(34vw,430px);height:min(34vw,430px);opacity:.28;filter:blur(2px);
+  background:radial-gradient(circle,rgba(18,140,126,.10) 0%,rgba(18,140,126,.035) 42%,transparent 72%);
+}
+main>.section:nth-of-type(2)::before{right:-180px;top:8%}
+#layanan::before{left:-210px;top:22%;background:radial-gradient(circle,rgba(56,85,217,.075) 0%,rgba(18,140,126,.03) 46%,transparent 72%)}
+#tentang::before{right:-190px;top:-10%;background:radial-gradient(circle,rgba(245,166,35,.08) 0%,rgba(245,166,35,.025) 44%,transparent 72%)}
+#kontak::before{left:-220px;bottom:-12%}
+#layanan{background:linear-gradient(180deg,#fff 0%,rgba(242,247,252,.48) 52%,#fff 100%)}
+#cara-kerja{box-shadow:inset 0 1px rgba(221,231,238,.55),inset 0 -1px rgba(221,231,238,.45)}
+#tentang{background:linear-gradient(180deg,#fff 0%,rgba(238,249,247,.42) 100%)}
+#kontak{background:linear-gradient(180deg,rgba(238,249,247,.42) 0%,#fff 70%)}
+@media(max-width:760px){
+  main>.section:not(#cara-kerja)::before{width:300px;height:300px;opacity:.20}
+  main>.section:nth-of-type(2)::before{right:-210px}
+  #layanan::before{left:-220px}
+  #tentang::before{right:-220px}
+  #kontak::before{left:-230px}
+}
+@media(prefers-reduced-motion:reduce){
+  main>.section::before{transform:none!important;animation:none!important}
+}
+</style>
+
 <style id="phase7-product-ui">
 /* Phase 7 — product section only. Hero remains locked. */
 #layanan .services{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;grid-auto-flow:row}
