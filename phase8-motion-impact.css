@@ -1,79 +1,61 @@
-/* Issue #123 — Phase 8 motion-impact correction.
-   Visual-motion layer only. No content, pricing, routing, BIMA logic, or layout structure changes. */
+/* Issue #123 — Phase 8 motion-impact correction v2.
+   Performance-first: transform + opacity only for scroll motion. */
 :root{
-  --motion-fast:220ms;
-  --motion-base:720ms;
-  --motion-slow:1000ms;
+  --motion-fast:200ms;
+  --motion-base:680ms;
+  --motion-slow:900ms;
   --motion-ease:cubic-bezier(.16,1,.3,1);
-  --motion-distance:34px;
-  --motion-stagger:130ms;
+  --motion-distance:42px;
+  --motion-stagger:140ms;
 }
 .reveal{
-  transform:translateY(var(--motion-distance)) scale(.985);
-  filter:blur(3px);
-  transition:
-    opacity var(--motion-base) var(--motion-ease),
-    transform var(--motion-base) var(--motion-ease),
-    filter calc(var(--motion-base) * .8) ease;
+  opacity:0;
+  transform:translate3d(0,var(--motion-distance),0);
+  transition:opacity var(--motion-base) ease,transform var(--motion-base) var(--motion-ease);
+  will-change:opacity,transform;
 }
-.reveal.in{transform:translateY(0) scale(1);filter:blur(0)}
+.reveal.in{opacity:1;transform:translate3d(0,0,0);will-change:auto}
 html.motion-ready .motion-item{
-  transform:translateY(var(--motion-distance)) scale(.975);
-  filter:blur(3px);
-  transition:
-    opacity var(--motion-base) var(--motion-ease),
-    transform var(--motion-base) var(--motion-ease),
-    filter calc(var(--motion-base) * .8) ease;
+  opacity:0;
+  transform:translate3d(0,var(--motion-distance),0) scale(.985);
+  transition:opacity var(--motion-base) ease,transform var(--motion-base) var(--motion-ease);
   transition-delay:var(--motion-delay,0ms);
+  will-change:opacity,transform;
 }
-html.motion-ready .motion-item.motion-in{transform:translateY(0) scale(1);filter:blur(0)}
+html.motion-ready .motion-item.motion-in{opacity:1;transform:translate3d(0,0,0) scale(1);will-change:auto}
 
-.hero-blob-1{animation:phase8AmbientOne 8s ease-in-out infinite alternate!important}
-.hero-blob-2{animation:phase8AmbientTwo 10s ease-in-out infinite alternate!important}
-@keyframes phase8AmbientOne{
-  0%{transform:translate3d(0,0,0) scale(1)}
-  50%{transform:translate3d(-28px,20px,0) scale(1.08)}
-  100%{transform:translate3d(18px,32px,0) scale(.96)}
-}
-@keyframes phase8AmbientTwo{
-  0%{transform:translate3d(0,0,0) scale(1)}
-  50%{transform:translate3d(26px,-24px,0) scale(1.1)}
-  100%{transform:translate3d(-18px,-10px,0) scale(.97)}
-}
+/* Ambient hero remains visible but slower and cheaper: transform only. */
+.hero-blob-1{animation:phase8AmbientOne 12s ease-in-out infinite alternate!important;will-change:transform}
+.hero-blob-2{animation:phase8AmbientTwo 15s ease-in-out infinite alternate!important;will-change:transform}
+@keyframes phase8AmbientOne{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-28px,22px,0) scale(1.07)}}
+@keyframes phase8AmbientTwo{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(26px,-20px,0) scale(1.08)}}
 
 @media(hover:hover) and (pointer:fine){
-  #layanan .svc{
-    transition:transform 360ms var(--motion-ease),box-shadow 360ms ease,border-color 260ms ease;
-  }
-  #layanan .svc:hover{transform:translateY(-10px) scale(1.012)}
-  #layanan .svc:hover .svc-icon{transform:translateY(-4px) rotate(-2deg) scale(1.08)}
-  #layanan .svc-cta svg{transition:transform 260ms var(--motion-ease)}
+  #layanan .svc{transition:transform 320ms var(--motion-ease),box-shadow 320ms ease,border-color 240ms ease}
+  #layanan .svc:hover{transform:translate3d(0,-9px,0) scale(1.01)}
+  #layanan .svc:hover .svc-icon{transform:translate3d(0,-3px,0) scale(1.07)}
+  #layanan .svc-cta svg{transition:transform 240ms var(--motion-ease)}
   #layanan .svc:hover .svc-cta svg{transform:translateX(7px)}
-  .btn{transition:transform 240ms var(--motion-ease),box-shadow 240ms ease,background 240ms ease,border-color 240ms ease}
-  .btn:hover{transform:translateY(-2px)}
+  .btn{transition:transform 220ms var(--motion-ease),box-shadow 220ms ease,background 220ms ease,border-color 220ms ease}
+  .btn:hover{transform:translate3d(0,-2px,0)}
 }
 
-#bimaFab{animation:phase8BimaPresence 3.8s ease-in-out infinite}
-@keyframes phase8BimaPresence{
-  0%,72%,100%{transform:translateY(0) scale(1)}
-  80%{transform:translateY(-4px) scale(1.025)}
-  88%{transform:translateY(0) scale(1)}
-  94%{transform:translateY(-2px) scale(1.012)}
-}
+/* Keep BIMA useful, not continuously bouncing while the user scrolls. */
+#bimaFab{animation:none!important}
+#bimaFab:hover{transform:translate3d(0,-3px,0) scale(1.015)}
 
 @media(max-width:640px){
-  :root{--motion-distance:24px;--motion-base:620ms;--motion-stagger:100ms}
-  .reveal,html.motion-ready .motion-item{filter:none}
-  .hero-blob-1{animation-duration:11s!important}
-  .hero-blob-2{animation-duration:13s!important}
-  #layanan .svc:hover{transform:none}
+  :root{--motion-distance:30px;--motion-base:580ms;--motion-stagger:100ms}
+  .hero-blob-1{animation-duration:16s!important}
+  .hero-blob-2{animation-duration:19s!important}
+  #layanan .svc:hover,#bimaFab:hover{transform:none}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto!important}
   .reveal,html.motion-ready .motion-item{
-    opacity:1!important;transform:none!important;filter:none!important;
-    transition:none!important;transition-delay:0ms!important;
+    opacity:1!important;transform:none!important;transition:none!important;
+    transition-delay:0ms!important;will-change:auto!important;
   }
-  .hero-blob-1,.hero-blob-2,#bimaFab{animation:none!important;transform:none!important}
+  .hero-blob-1,.hero-blob-2,#bimaFab{animation:none!important;transform:none!important;will-change:auto!important}
   #layanan .svc,#layanan .svc-icon,#layanan .svc-cta svg,.btn{transition:none!important;transform:none!important}
 }
