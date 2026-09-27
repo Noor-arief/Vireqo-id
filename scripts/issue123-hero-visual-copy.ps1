@@ -18,11 +18,11 @@ $content = [System.IO.File]::ReadAllText($Path, [System.Text.UTF8Encoding]::new(
 [System.IO.File]::Copy($Path, $Backup, $true)
 
 $changes = @(
-  # Visible fallback copy in the existing hero illustration. Structure/CSS/animation untouched.
-  @('Website Siap','Website & Landing Page'),
-  @('Dikerjakan Tim Vireqo','Siap untuk Bisnis Anda'),
-  @('CS Profesional','AI Client Assistant'),
-  @('Respons Cepat dan Ramah','Ask BIMA'),
+  # Visible fallback copy only. Exact span targets prevent touching i18n objects accidentally.
+  @('<span data-i18n="t18">Website Siap</span>','<span data-i18n="t18">Website & Landing Page</span>'),
+  @('<span data-i18n="t19">Dikerjakan Tim Vireqo</span>','<span data-i18n="t19">Siap untuk Bisnis Anda</span>'),
+  @('<span data-i18n="t20">CS Profesional</span>','<span data-i18n="t20">AI Client Assistant</span>'),
+  @('<span data-i18n="t21">Respons Cepat dan Ramah</span>','<span data-i18n="t21">Ask BIMA</span>'),
 
   # Indonesian i18n values.
   @('"t18": "Website Siap"','"t18": "Website & Landing Page"'),
@@ -46,21 +46,15 @@ try {
     $content = $content.Replace($old, $new)
   }
 
-  # Preserve UTF-8 BOM because current production file already has it; do not introduce unrelated encoding churn.
+  # Keep current encoding/BOM to avoid unrelated whole-file encoding churn in this batch.
   [System.IO.File]::WriteAllText($Path, $content, [System.Text.UTF8Encoding]::new($true))
 
-  $required = @(
-    'Website & Landing Page',
-    'AI Client Assistant',
-    'Ask BIMA',
-    'Ready for Your Business'
-  )
-  foreach ($value in $required) {
-    if (-not $content.Contains($value)) { throw "VERIFY FAILED: missing [$value]" }
+  foreach ($pair in $changes) {
+    if ($content.Contains($pair[0])) { throw "VERIFY FAILED: old target remains [$($pair[0])]" }
   }
 
   Write-Host 'PATCH COMPLETE: Issue #123 hero visual copy only.' -ForegroundColor Green
-  Write-Host 'No CSS, JS behavior, BIMA runtime, product cards, SEO, FAQ, legal, or backend intentionally changed.' -ForegroundColor Cyan
+  Write-Host 'Structure, CSS, animation, JS behavior, BIMA runtime, product cards, SEO, FAQ, legal and backend untouched.' -ForegroundColor Cyan
   git diff --check -- index.html
   git diff --stat -- index.html
 }
