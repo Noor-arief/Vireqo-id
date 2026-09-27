@@ -1,7 +1,8 @@
 name: Step 3 Hero Repair
 on:
   push:
-    branches: [issue-123-step3-clean-final]
+    branches:
+      - issue-123-step3-clean-final
 permissions:
   contents: write
 jobs:
@@ -11,10 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Repair approved hero only
-        shell: python
         run: |
+          python - <<'PY'
           from pathlib import Path
-          import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8-sig')
           start=s.find('<style id="issue123-final-approved-hero">')
@@ -23,60 +23,24 @@ jobs:
               raise SystemExit('approved hero style block missing')
           end += len('</style>')
           css='''<style id="issue123-final-approved-hero">
-/* STEP 3 APPROVED HERO — preserve artwork/runtime; desktop proportions restored */
-.hero{
-  min-height:auto !important;
-  padding:34px clamp(28px,5vw,96px) 24px !important;
-  display:grid !important;
-  grid-template-columns:minmax(0,1.02fr) minmax(500px,.98fr) !important;
-  align-items:center !important;
-  gap:clamp(40px,4.5vw,76px) !important;
-  overflow:hidden !important;
-}
-.hero .badge{display:none !important}
-.hero-copy{min-width:0 !important;width:auto !important;max-width:none !important}
-.hero-copy h1,.hero h1{
-  font-size:clamp(48px,3.55vw,62px) !important;
-  line-height:1.08 !important;
-  letter-spacing:-.035em !important;
-  max-width:760px !important;
-  margin:0 0 16px !important;
-}
-.hero-copy>p,.hero>div:first-child>p{
-  max-width:700px !important;
-  font-size:clamp(17px,1.12vw,20px) !important;
-  line-height:1.62 !important;
-}
-.hero-bullets{margin-top:15px !important;gap:5px !important}
-.hero-bullets li{line-height:1.35 !important}
-.hero-actions{margin-top:24px !important}
-.issue123-approved-hero{
-  width:100% !important;min-width:0 !important;display:flex !important;
-  align-items:center !important;justify-content:center !important;
-  transform:scale(.84);transform-origin:center center;
-}
-.issue123-approved-hero-img{
-  display:block !important;width:100% !important;max-width:none !important;
-  height:auto !important;margin:0 !important;object-fit:contain !important;
-}
-@media (min-width:1025px) and (max-width:1279px){
-  .hero{grid-template-columns:minmax(0,1.02fr) minmax(460px,.98fr) !important}
-  .hero-copy h1,.hero h1{font-size:clamp(46px,4.25vw,55px) !important}
-  .issue123-approved-hero{transform:scale(.80)}
-}
-@media (max-width:1024px){
-  .hero{display:block !important;padding:32px 20px 40px !important;min-height:auto !important}
-  .hero-copy h1,.hero h1{font-size:clamp(38px,11vw,48px) !important;max-width:none !important}
-  .issue123-approved-hero{margin-top:28px !important;transform:none !important}
-  .issue123-approved-hero-img{width:100% !important;margin:0 !important}
-}
-</style>'''
+          /* STEP 3 APPROVED HERO */
+          .hero{min-height:auto!important;padding:34px clamp(28px,5vw,96px) 24px!important;display:grid!important;grid-template-columns:minmax(0,1.02fr) minmax(500px,.98fr)!important;align-items:center!important;gap:clamp(40px,4.5vw,76px)!important;overflow:hidden!important}
+          .hero .badge{display:none!important}
+          .hero-copy{min-width:0!important;width:auto!important;max-width:none!important}
+          .hero-copy h1,.hero h1{font-size:clamp(48px,3.55vw,62px)!important;line-height:1.08!important;letter-spacing:-.035em!important;max-width:760px!important;margin:0 0 16px!important}
+          .hero-copy>p,.hero>div:first-child>p{max-width:700px!important;font-size:clamp(17px,1.12vw,20px)!important;line-height:1.62!important}
+          .hero-bullets{margin-top:15px!important;gap:5px!important}.hero-bullets li{line-height:1.35!important}.hero-actions{margin-top:24px!important}
+          .issue123-approved-hero{width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;transform:scale(.84);transform-origin:center center}
+          .issue123-approved-hero-img{display:block!important;width:100%!important;max-width:none!important;height:auto!important;margin:0!important;object-fit:contain!important}
+          @media (min-width:1025px) and (max-width:1279px){.hero{grid-template-columns:minmax(0,1.02fr) minmax(460px,.98fr)!important}.hero-copy h1,.hero h1{font-size:clamp(46px,4.25vw,55px)!important}.issue123-approved-hero{transform:scale(.80)}}
+          @media (max-width:1024px){.hero{display:block!important;padding:32px 20px 40px!important;min-height:auto!important}.hero-copy h1,.hero h1{font-size:clamp(38px,11vw,48px)!important;max-width:none!important}.issue123-approved-hero{margin-top:28px!important;transform:none!important}.issue123-approved-hero-img{width:100%!important;margin:0!important}}
+          </style>'''
           s=s[:start]+css+s[end:]
-          p.write_text(s,encoding='utf-8',newline='')
-          # hard guards: do not allow runtime/artwork loss
           checks=['assets/vireqo-hero-approved.png','hamburgerBtn','mobileMenu','bimaFab','data-i18n']
           missing=[x for x in checks if x not in s]
           if missing: raise SystemExit('runtime guard failed: '+','.join(missing))
+          p.write_text(s,encoding='utf-8',newline='')
+          PY
       - name: Commit repaired hero
         run: |
           git config user.name "github-actions[bot]"
