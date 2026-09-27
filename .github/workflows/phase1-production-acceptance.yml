@@ -54,6 +54,13 @@ jobs:
             const ml=m.locator('#langToggleMobile'); a=(await mh.innerText()).trim();
             await ml.click(); await m.waitForTimeout(250); assert.notStrictEqual((await mh.innerText()).trim(),a,'mobile language did not change');
             await hb.click();
+            // Reset language to ID before Phase 7 product assertions; the hero test above intentionally switched to EN.
+            if((await m.locator('html').getAttribute('lang'))==='en'){
+              await hb.click(); await m.waitForTimeout(150);
+              await m.locator('#langToggleMobile').click(); await m.waitForTimeout(250);
+              await hb.click(); await m.waitForTimeout(150);
+            }
+            assert.strictEqual(await m.locator('html').getAttribute('lang'),'id','mobile product QA did not reset to ID');
             // Phase 7 mobile product-section regression: real Chromium viewport 390x844.
             await m.locator('#layanan').scrollIntoViewIfNeeded();
             const cards=m.locator('#layanan .svc');
