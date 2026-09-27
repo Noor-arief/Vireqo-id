@@ -1,6 +1,6 @@
 # Issue #123 — Vireqo Commercial Refresh
 
-Working branch: `issue-123-vireqo-commercial-refresh`
+Working branch: `issue-123-step3-local-checkpoint`
 
 ## Safety rules
 - Do not write to `main` until the full batch is reviewed and approved.
@@ -10,6 +10,8 @@ Working branch: `issue-123-vireqo-commercial-refresh`
 - Client isolation remains hard: no cross-client knowledge, session, credential, or data sharing.
 - Use the locked BIMA avatar asset already present in the product; do not generate/substitute another BIMA face.
 - Never reconstruct or replace the large `index.html` from truncated connector output. Large-file changes must come from the complete source and pass a narrow diff check.
+- Do not repeat completed or already-blocked procedures. Use the local checkpoint bridge only when a connector limitation blocks a narrow change.
+- Do not move to the next step until the current step is visually and functionally verified.
 
 ## Locked commercial baseline
 Four product cards only:
@@ -28,8 +30,13 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [ ] Remove accidental UTF-8 BOM introduced by the hero-copy PowerShell write.
 - [x] Refresh hero floating-card copy while preserving the existing HTML/CSS animation structure.
 - [x] Hero floating cards now represent Website & Landing Page + AI Client Assistant / Ask BIMA.
-- [ ] Complete hero illustration refresh to include the locked BIMA avatar and CS Dashboard representation.
-- [ ] Use the existing locked BIMA avatar asset only.
+- [x] Approved hero artwork transplanted into the local Step 3 checkpoint (`7105436`) without touching production.
+- [x] Approved Hero desktop composition restored in the local checkpoint: 47/53 copy/artwork ratio, badge hidden, approved artwork enlarged, CTA area retained.
+- [ ] STEP 3 FINAL QA: remove the remaining bottom overflow/gap visible at the fold without changing the approved composition.
+- [ ] STEP 3 FINAL QA: verify ID/EN switch after the approved hero transplant.
+- [ ] STEP 3 FINAL QA: verify mobile/hamburger behavior after the approved hero transplant.
+- [ ] STEP 3 FINAL QA: verify full page sections and BIMA runtime remain present/unchanged.
+- [ ] STEP 3 COMPLETE — only check after all four final-QA items above pass.
 - [ ] Replace legacy six-service presentation with exactly four product cards.
 - [ ] Add final baseline pricing and clear inclusions/exclusions to product cards.
 - [ ] Add Website + AI Assistant bundle pricing logic (website fee + selected AI subscription).
@@ -51,11 +58,12 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [ ] Final diff review before merge.
 - [ ] Explicit approval before merge to `main`.
 
-## Verified checkpoint — 27 Sep 2026
-- Hero visual-copy commit: `dba5199`.
-- Compared against safe head `487f1cd`: exactly one file changed (`index.html`), 3 additions and 3 deletions.
-- Local `git diff --check` returned clean.
-- No merge to `main` performed.
+## Step 3 local checkpoint — 27 Sep 2026
+- Local checkpoint commit: `71054367ec33c1061e35ed27a07d9116d7e8bcca` (`checkpoint: step3 working local hero`).
+- `index.html` adds only the approved Hero override and replaces the old synthetic Hero visual with `assets/vireqo-hero-approved.png`.
+- The approved artwork binary is present in the checkpoint commit.
+- Production/main remains untouched.
+- Step 3 is NOT complete until the four final-QA items above pass.
 
 ## Current source audit findings
 Legacy positioning still exists in the current source, including six-service wording, Customer Service Training, SEO consulting, old CS/team wording, old How It Works copy, footer positioning, and BIMA service mappings. These must be migrated deliberately rather than globally replaced.
