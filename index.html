@@ -746,17 +746,17 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
 
 
 <style id="issue123-final-approved-hero">
-/* STEP 3 APPROVED HERO */
-.hero{min-height:auto!important;padding:34px clamp(28px,5vw,96px) 24px!important;display:grid!important;grid-template-columns:minmax(0,1.02fr) minmax(500px,.98fr)!important;align-items:center!important;gap:clamp(40px,4.5vw,76px)!important;overflow:hidden!important}
-.hero .badge{display:none!important}
-.hero-copy{min-width:0!important;width:auto!important;max-width:none!important}
-.hero-copy h1,.hero h1{font-size:clamp(48px,3.55vw,62px)!important;line-height:1.08!important;letter-spacing:-.035em!important;max-width:760px!important;margin:0 0 16px!important}
-.hero-copy>p,.hero>div:first-child>p{max-width:700px!important;font-size:clamp(17px,1.12vw,20px)!important;line-height:1.62!important}
-.hero-bullets{margin-top:15px!important;gap:5px!important}.hero-bullets li{line-height:1.35!important}.hero-actions{margin-top:24px!important}
-.issue123-approved-hero{width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;transform:scale(.84);transform-origin:center center}
-.issue123-approved-hero-img{display:block!important;width:100%!important;max-width:none!important;height:auto!important;margin:0!important;object-fit:contain!important}
-@media (min-width:1025px) and (max-width:1279px){.hero{grid-template-columns:minmax(0,1.02fr) minmax(460px,.98fr)!important}.hero-copy h1,.hero h1{font-size:clamp(46px,4.25vw,55px)!important}.issue123-approved-hero{transform:scale(.80)}}
-@media (max-width:1024px){.hero{display:block!important;padding:32px 20px 40px!important;min-height:auto!important}.hero-copy h1,.hero h1{font-size:clamp(38px,11vw,48px)!important;max-width:none!important}.issue123-approved-hero{margin-top:28px!important;transform:none!important}.issue123-approved-hero-img{width:100%!important;margin:0!important}}
+/* STEP 3 HOTFIX — actual Hero DOM */
+.hero{min-height:auto!important;padding:42px clamp(40px,6vw,112px) 38px!important;display:grid!important;grid-template-columns:minmax(560px,1.08fr) minmax(520px,.92fr)!important;align-items:center!important;gap:clamp(48px,6vw,104px)!important;overflow:hidden!important}
+.hero>div:first-child{min-width:0!important;width:100%!important;max-width:760px!important}
+.hero #heroH1{font-size:clamp(46px,3.35vw,62px)!important;line-height:1.06!important;letter-spacing:-.035em!important;max-width:760px!important;width:100%!important;margin:0 0 18px!important;word-break:normal!important;overflow-wrap:normal!important;white-space:normal!important}
+.hero #heroH1 span{display:inline!important}
+.hero>div:first-child>p{max-width:690px!important;font-size:clamp(17px,1.08vw,20px)!important;line-height:1.6!important}
+.hero-bullets{margin-top:16px!important;gap:6px!important}.hero-actions{margin-top:24px!important}
+.hero>.issue123-approved-hero{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:700px!important;min-width:0!important;height:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0 auto!important}
+.hero .issue123-approved-hero-img{display:block!important;width:100%!important;max-width:700px!important;height:auto!important;margin:0!important;object-fit:contain!important}
+@media(max-width:1180px) and (min-width:901px){.hero{grid-template-columns:minmax(470px,1fr) minmax(420px,.9fr)!important;gap:36px!important;padding-inline:42px!important}.hero #heroH1{font-size:clamp(43px,4.4vw,54px)!important}.hero>.issue123-approved-hero{max-width:560px!important}}
+@media(max-width:900px){.hero{display:flex!important;flex-direction:column!important;padding:32px 20px 40px!important;gap:28px!important}.hero>div:first-child{max-width:none!important}.hero #heroH1{font-size:clamp(38px,10vw,48px)!important;max-width:none!important}.hero>.issue123-approved-hero{max-width:680px!important;width:100%!important;margin:0 auto!important}.hero .issue123-approved-hero-img{width:100%!important;max-width:680px!important}}
 </style>
 
 </head>
