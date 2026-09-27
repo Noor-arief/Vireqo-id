@@ -75,8 +75,12 @@ header.scrolled{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);box-
 
 .hero{padding:60px 0 0;overflow:hidden}
 .hero-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.28;z-index:0;pointer-events:none}
-.hero-blob-1{width:400px;height:400px;background:var(--teal-m);top:-150px;right:-70px}
-.hero-blob-2{width:260px;height:260px;background:var(--amber-m);bottom:40px;left:-100px}
+.hero-blob-1{width:400px;height:400px;background:var(--teal-m);top:-150px;right:-70px;animation:heroAmbientOne 14s var(--motion-ease) infinite alternate}
+.hero-blob-2{width:260px;height:260px;background:var(--amber-m);bottom:40px;left:-100px;animation:heroAmbientTwo 17s var(--motion-ease) infinite alternate}
+@keyframes heroAmbientOne{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-18px,14px,0) scale(1.05)}}
+@keyframes heroAmbientTwo{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(16px,-12px,0) scale(1.04)}}
+@media(max-width:640px){.hero-blob-1,.hero-blob-2{animation-duration:20s;opacity:.22}}
+@media(prefers-reduced-motion:reduce){.hero-blob-1,.hero-blob-2{animation:none!important;transform:none!important}}
 .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding-bottom:56px}
 @media(max-width:960px){ .hero .wrap{grid-template-columns:1fr} .hero-visual{margin-top:36px} }
 .badge{padding:6px 14px;border-radius:20px;font-size:11.5px;font-weight:700;letter-spacing:.3px;display:inline-flex;align-items:center;gap:7px;background:var(--teal-l);color:var(--teal-dark);border:1px solid var(--teal-m)}
