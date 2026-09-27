@@ -43,11 +43,11 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [x] Limit Hero production repair to `index.html` / approved Hero asset scope; BIMA runtime and other projects untouched.
 - [x] Restore exact approved Hero lock from saved approved checkpoint after regression.
 - [x] Production Hero desktop visual accepted by user on 27 Sep 2026; this composition is now locked and must not be changed without explicit instruction.
-- [ ] Production Hero mobile visual acceptance.
-- [ ] Verify ID/EN switch interactively in production browser.
-- [ ] Verify mobile hamburger interactively in production browser.
-- [ ] Verify Ask BIMA interactively after Hero deployment.
-- [ ] PHASE 1 COMPLETE — check only after the four interactive acceptance items above pass.
+- [x] Production Hero mobile visual acceptance — automated Chromium acceptance at 390×844 passed on 27 Sep 2026 (heading + approved Hero artwork visible and correctly bounded).
+- [x] Verify ID/EN switch interactively in production browser — desktop and mobile Chromium click tests passed on 27 Sep 2026.
+- [x] Verify mobile hamburger interactively in production browser — button visibility, `aria-expanded=true`, and menu visibility passed on 27 Sep 2026.
+- [x] Verify Ask BIMA interactively after Hero deployment — desktop and mobile FAB/panel-open tests passed on 27 Sep 2026.
+- [x] PHASE 1 COMPLETE — production acceptance suite passed against `https://vireqo.id` on 27 Sep 2026.
 
 ### Phase 2 — Four-product commercial presentation
 - [ ] Replace legacy six-service presentation with exactly four product cards.
@@ -78,7 +78,8 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - GitHub Pages build/deploy for this commit: successful.
 - Desktop Hero visually accepted by user after production refresh.
 - Approved composition is locked; do not touch it in subsequent phases.
-- Remaining Phase 1 work is mobile + interactive acceptance only; do not begin Phase 2 until Phase 1 is complete.
+- Phase 1 production acceptance suite passed after runner fix commit `1643a496f7c362b9e17d321914ab798bcade1c62`.
+- Phase 1 is complete. Next work begins at Phase 2 only.
 
 ## Current source audit findings
 Legacy positioning still exists below the Hero, including six-service wording, Customer Service Training, SEO consulting, old CS/team wording, old How It Works copy, footer positioning, and BIMA service mappings. These belong to later roadmap phases and must not be mixed into the locked Hero.
