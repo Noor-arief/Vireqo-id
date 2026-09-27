@@ -12,7 +12,7 @@ Working branch: `issue-123-vireqo-commercial-refresh`
 - Do not repeat completed or failed procedures; move to a different recovery path.
 - Do not mix Vireqo/BIMA work with other projects.
 - Update this roadmap immediately when a step is completed.
-- APPROVED DESKTOP HERO IS LOCKED: do not alter Hero desktop copy, proportions, artwork, CTA layout, or desktop composition unless the user explicitly requests a new Hero change.
+- APPROVED HERO IS NOW LOCKED: do not alter Hero copy, proportions, artwork, CTA layout, or desktop composition unless the user explicitly requests a new Hero change.
 
 ## Locked commercial baseline
 Four product cards only:
@@ -47,12 +47,7 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [x] Verify ID/EN switch interactively in production browser — desktop and mobile Chromium click tests passed on 27 Sep 2026.
 - [x] Verify mobile hamburger interactively in production browser — button visibility, `aria-expanded=true`, and menu visibility passed on 27 Sep 2026.
 - [x] Verify Ask BIMA interactively after Hero deployment — desktop and mobile FAB/panel-open tests passed on 27 Sep 2026.
-- [x] Real-device HP review completed; identified header/menu overflow and excessive Hero vertical footprint.
-- [x] Mobile-only real-device correction applied: compact header/logo, menu actions constrained, Hero copy/benefits/CTA spacing reduced, approved artwork moved higher. Desktop Hero untouched.
-- [x] Mobile geometry regression passed at 360×800, 390×844, and 412×915; screenshot review at 390×844 confirmed balanced mobile composition.
-- [x] Production deployment for real-device correction succeeded; production acceptance suite re-passed after deployment.
-- [x] Real-device mobile correction: hide `Trusted Digital Partner for SMEs` Hero badge at <=860px; desktop Hero remains unchanged.
-- [x] PHASE 1 COMPLETE — desktop locked + mobile real-device correction deployed and regression-tested on 27 Sep 2026.
+- [x] PHASE 1 COMPLETE — production acceptance suite passed against `https://vireqo.id` on 27 Sep 2026.
 
 ### Phase 2 — Four-product commercial presentation
 - [ ] Replace legacy six-service presentation with exactly four product cards.
@@ -79,12 +74,11 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [ ] Final commercial-refresh diff review before final merge.
 
 ## Hero production checkpoint — 27 Sep 2026
-- Approved desktop restore checkpoint: `523aa4b4b6eb2e5db5b1a4ac8c9349ea1ffda241`.
-- Desktop Hero visually accepted by user and remains locked.
-- Real-device mobile correction production commit: `5253e6521d8047d8e229066c1ebf16382285c380`.
-- Mobile correction changes only mobile CSS behavior; desktop Hero remains unchanged.
-- GitHub Pages build/deploy for the mobile correction: successful.
-- Phase 1 production acceptance suite re-passed after the mobile correction.
+- Current approved production restore commit: `523aa4b4b6eb2e5db5b1a4ac8c9349ea1ffda241`.
+- GitHub Pages build/deploy for this commit: successful.
+- Desktop Hero visually accepted by user after production refresh.
+- Approved composition is locked; do not touch it in subsequent phases.
+- Phase 1 production acceptance suite passed after runner fix commit `1643a496f7c362b9e17d321914ab798bcade1c62`.
 - Phase 1 is complete. Next work begins at Phase 2 only.
 
 ## Current source audit findings
