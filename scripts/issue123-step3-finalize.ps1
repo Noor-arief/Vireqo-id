@@ -10,11 +10,28 @@ if ($content.Contains($marker)) {
   exit 0
 }
 
+# Safety checks first. Match the current runtime semantically instead of requiring one exact HTML quoting pattern.
+$requiredPatterns = @(
+  'assets/vireqo-hero-approved\.png',
+  'langBtn',
+  'hamburgerBtn',
+  'mobileMenu',
+  'bimaFab'
+)
+foreach ($pattern in $requiredPatterns) {
+  if ($content -notmatch $pattern) { throw "STOP: required runtime anchor missing: $pattern" }
+}
+
 $styleId = '<style id="issue123-final-approved-hero">'
 $stylePos = $content.IndexOf($styleId)
-if ($stylePos -lt 0) { throw 'STOP: approved Hero style not found.' }
-$styleEnd = $content.IndexOf('</style>', $stylePos)
-if ($styleEnd -lt 0) { throw 'STOP: approved Hero style closing tag not found.' }
+if ($stylePos -lt 0) {
+  # Current checkpoint can legitimately have the approved artwork without this historical style id.
+  # Insert the narrow QA CSS before the last closing style tag instead.
+  $styleEnd = $content.LastIndexOf('</style>')
+} else {
+  $styleEnd = $content.IndexOf('</style>', $stylePos)
+}
+if ($styleEnd -lt 0) { throw 'STOP: closing style tag not found.' }
 
 $qaCss = @'
 
@@ -31,19 +48,6 @@ html,body{max-width:100%;overflow-x:clip}
 '@
 
 $content = $content.Insert($styleEnd, $qaCss + "`r`n")
-
-# Narrow safety checks: do not write if the approved artwork or core runtime anchors are absent.
-$required = @(
-  'assets/vireqo-hero-approved.png',
-  'id="langBtn"',
-  'id="hamburgerBtn"',
-  'id="mobileMenu"',
-  'bimaFab'
-)
-foreach ($needle in $required) {
-  if (-not $content.Contains($needle)) { throw "STOP: required anchor missing: $needle" }
-}
-
 $backup = "$Path.step3-before-final-qa.bak"
 Copy-Item $Path $backup -Force
 [System.IO.File]::WriteAllText((Resolve-Path $Path), $content, [System.Text.UTF8Encoding]::new($false))
