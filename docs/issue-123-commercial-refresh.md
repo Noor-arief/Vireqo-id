@@ -2,6 +2,13 @@
 
 Working branch: `issue-123-vireqo-commercial-refresh`
 
+## HARD EXECUTION RULES — LOCKED
+- Work only in the isolated working branch/staging/local environment. Do not write to `main` or production until the full roadmap is reviewed and explicitly approved.
+- Finish the active step before reporting back. Report only when the step is completed and verifiable, or when a genuine blocker cannot be resolved independently.
+- Strict project isolation: this roadmap is Vireqo only. Do not touch, merge, or mix BimaGinga/BIMA Core, NUSA/Jelnusa, BimaQuant, portfolio, or any other project. Existing BIMA runtime embedded in Vireqo may only be changed when its specific roadmap step is reached.
+- This roadmap is the single source of truth. Immediately mark a completed and verified item `[x]` before moving to the next unchecked item. Never skip ahead. Never redo a checked item unless a regression is proven.
+- Preserve already approved visual checkpoints. Do not regenerate, substitute, or redesign an approved asset unless explicitly requested.
+
 ## Safety rules
 - Do not write to `main` until the full batch is reviewed and approved.
 - Preserve BIMA runtime/API/session/WhatsApp behavior.
