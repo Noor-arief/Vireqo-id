@@ -1108,6 +1108,14 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
     }));
   }
 
+  // Phase 8.6: reflect the section currently in view in desktop navigation.
+  if('IntersectionObserver' in window){
+    const navById={layanan:document.querySelector('.nav-links a[href="#layanan"]'),'cara-kerja':document.querySelector('.nav-links a[href="#cara-kerja"]'),tentang:document.querySelector('.nav-links a[href="#tentang"]')};
+    const navSections=Object.keys(navById).map(id=>document.getElementById(id)).filter(Boolean);
+    const navIo=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){Object.values(navById).forEach(a=>a&&a.classList.remove('is-active'));const a=navById[entry.target.id];if(a)a.classList.add('is-active');}});},{rootMargin:'-28% 0px -58% 0px',threshold:0});
+    navSections.forEach(el=>navIo.observe(el));
+  }
+
   const revealEls = document.querySelectorAll('.reveal');
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduceMotion && 'IntersectionObserver' in window){
@@ -1812,6 +1820,20 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
 })();
 </script>
 
+
+<style id="phase8-microinteractions">
+/* Phase 8.6 — navigation/button micro-interactions only. */
+.nav-links a{transition:color var(--motion-fast) ease}
+.nav-links a.is-active{color:var(--teal-dark)}
+.nav-links a.is-active::after{right:0}
+#layanan .svc-cta svg{transition:transform var(--motion-fast) var(--motion-ease)}
+#layanan .svc-cta:hover svg,#layanan .svc-cta:focus-visible svg{transform:translateX(4px)}
+#layanan .svc-cta:active{transform:translateY(1px)}
+.lang-toggle{transition:border-color var(--motion-fast) ease,background var(--motion-fast) ease,transform var(--motion-fast) ease}
+.lang-toggle:hover{border-color:var(--teal);background:var(--teal-l)}
+.lang-toggle:active{transform:scale(.97)}
+@media(prefers-reduced-motion:reduce){#layanan .svc-cta svg,.nav-links a,.lang-toggle{transition:none!important;transform:none!important}}
+</style>
 
 <style id="phase8-section-rhythm">
 /* Phase 8.4 — restrained section rhythm only; no content/order/behavior changes. */
