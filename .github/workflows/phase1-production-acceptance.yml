@@ -89,6 +89,25 @@ jobs:
             const mf=m.locator('#bimaFab'); assert(await mf.isVisible(),'mobile Ask BIMA hidden');
             await mf.click(); await m.waitForTimeout(300); assert(await m.locator('#bimaPanel').isVisible(),'mobile BIMA panel did not open');
             console.log('PASS: mobile hero + ID/EN + hamburger + product cards + product CTA + Ask BIMA');
+            // Phase 8.7/8.8 mobile + reduced-motion guardrails.
+            const overflow=await m.evaluate(()=>({sw:document.documentElement.scrollWidth,cw:document.documentElement.clientWidth}));
+            assert(overflow.sw<=overflow.cw+1,`mobile full-page horizontal overflow: ${overflow.sw} > ${overflow.cw}`);
+            await m.locator('#bimaClose').click(); await m.waitForTimeout(150);
+            await m.locator('#layanan').scrollIntoViewIfNeeded(); await m.waitForTimeout(900);
+            const nudge=m.locator('#bimaNudge');
+            if(await nudge.isVisible()){const nb=await nudge.boundingBox();assert(nb&&nb.x>=0&&nb.x+nb.width<=390,'mobile BIMA helper overflows viewport');}
+            const rm=await browser.newPage({viewport:{width:390,height:844},isMobile:true,reducedMotion:'reduce'});
+            await rm.goto(process.env.TARGET_URL,{waitUntil:'networkidle',timeout:60000});
+            const reduced=await rm.evaluate(()=>({
+              scrollBehavior:getComputedStyle(document.documentElement).scrollBehavior,
+              revealTransition:getComputedStyle(document.querySelector('.reveal')).transitionDuration,
+              fabAnimation:getComputedStyle(document.querySelector('#bimaFab')).animationName
+            }));
+            assert(reduced.scrollBehavior==='auto','reduced-motion smooth scroll still enabled');
+            assert(reduced.revealTransition==='0s'||reduced.revealTransition==='0.001ms'||reduced.revealTransition.includes('0.00001'),'reduced-motion reveal transition still active');
+            assert(reduced.fabAnimation==='none','reduced-motion BIMA FAB animation still active');
+            await rm.close();
+            console.log('PASS: Phase 8 mobile overflow + BIMA helper bounds + reduced-motion guardrails');
             await browser.close();
           })().catch(e=>{console.error(`::error title=Production acceptance failed::${String(e && e.stack || e).replace(/%/g,'%25').replace(/\r/g,'%0D').replace(/\n/g,'%0A')}`);console.error(e);process.exit(1)});
           JS
