@@ -53,9 +53,35 @@ jobs:
             assert(await m.locator('#mobileMenu').isVisible(),'mobile menu did not open');
             const ml=m.locator('#langToggleMobile'); a=(await mh.innerText()).trim();
             await ml.click(); await m.waitForTimeout(250); assert.notStrictEqual((await mh.innerText()).trim(),a,'mobile language did not change');
-            await hb.click(); const mf=m.locator('#bimaFab'); assert(await mf.isVisible(),'mobile Ask BIMA hidden');
+            await hb.click();
+            // Phase 7 mobile product-section regression: real Chromium viewport 390x844.
+            await m.locator('#layanan').scrollIntoViewIfNeeded();
+            const cards=m.locator('#layanan .svc');
+            assert.strictEqual(await cards.count(),4,'mobile product card count must be 4');
+            const boxes=[];
+            for(let i=0;i<4;i++){
+              const card=cards.nth(i); assert(await card.isVisible(),`mobile product card ${i+1} hidden`);
+              const box=await card.boundingBox(); assert(box,'mobile product card missing box');
+              assert(box.x>=0 && box.x+box.width<=390,'mobile product card overflows viewport');
+              boxes.push(box);
+            }
+            for(let i=1;i<boxes.length;i++) assert(boxes[i].y>boxes[i-1].y+boxes[i-1].height-2,'mobile product cards are not single-column');
+            const idText=await m.locator('#layanan').innerText();
+            for(const price of ['Rp799.000','Rp2.250.000','Rp2.790.000','Rp1.500.000']) assert(idText.includes(price),`mobile ID missing ${price}`);
+            for(const cta of ['Mulai Website Anda','Mulai dengan AI Assistant','Pilih Paket Website + AI','Mulai Dashboard CS']) assert(idText.includes(cta),`mobile ID missing CTA: ${cta}`);
+            const mobileMenuBtn=m.locator('#hamburgerBtn'); await mobileMenuBtn.click(); await m.waitForTimeout(150);
+            await m.locator('#langToggleMobile').click(); await m.waitForTimeout(250);
+            const enText=await m.locator('#layanan').innerText();
+            for(const price of ['Rp799,000','Rp2,250,000','Rp2,790,000','Rp1,500,000']) assert(enText.includes(price),`mobile EN missing ${price}`);
+            for(const cta of ['Start Your Website','Start with AI Assistant','Choose Website + AI Package','Start Your CS Dashboard']) assert(enText.includes(cta),`mobile EN missing CTA: ${cta}`);
+            await mobileMenuBtn.click(); await m.waitForTimeout(150);
+            const productCta=m.locator('#layanan .svc-cta').first(); assert(await productCta.isVisible(),'mobile product CTA hidden');
+            await productCta.click(); await m.waitForTimeout(300);
+            assert(await m.locator('#bimaPanel').isVisible(),'mobile product CTA did not open BIMA');
+            await m.locator('#bimaClose').click();
+            const mf=m.locator('#bimaFab'); assert(await mf.isVisible(),'mobile Ask BIMA hidden');
             await mf.click(); await m.waitForTimeout(300); assert(await m.locator('#bimaPanel').isVisible(),'mobile BIMA panel did not open');
-            console.log('PASS: mobile hero + ID/EN + hamburger + Ask BIMA');
+            console.log('PASS: mobile hero + ID/EN + hamburger + product cards + product CTA + Ask BIMA');
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
