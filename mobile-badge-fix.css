@@ -1,0 +1,6 @@
+/* Phase 1 mobile-only badge fix. No desktop/layout/runtime changes. */
+@media (max-width: 960px) {
+  .hero .badge {
+    display: none !important;
+  }
+}
