@@ -25,10 +25,12 @@ try {
   $avatarHtml = '<div class="hv-avatar"><img src="' + $avatar.Value + '" alt="BIMA" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></div><div><div class="hv-name">BIMA</div>'
   $content = [regex]::Replace($content,$avatarPattern,[System.Text.RegularExpressions.MatchEvaluator]{param($m) $avatarHtml},1)
 
-  $anchor = '<div class="hv-float hv-float-2"><div class="hv-float-icon">💬</div><div><div class="hv-float-title"><span data-i18n="t20">AI Client Assistant</span></div><div class="hv-float-sub"><span data-i18n="t21">Ask BIMA</span></div></div></div>'
-  if (([regex]::Matches($content,[regex]::Escape($anchor))).Count -ne 1) { throw 'STOP: hero AI card anchor mismatch.' }
-  $card = '<div class="hv-float hv-float-3 issue123-dashboard-float"><div class="hv-float-icon">&#128202;</div><div><div class="hv-float-title"><span data-i18n="t47">Dashboard Customer Service</span></div><div class="hv-float-sub"><span data-i18n="t50">Pantau performa tim CS secara real-time</span></div></div></div>'
-  $content = $content.Replace($anchor,$anchor+$card)
+  # Match the existing AI float card by its i18n keys so the script never embeds the emoji literal.
+  $anchorPattern = '(?s)<div class="hv-float hv-float-2">.*?<span data-i18n="t20">AI Client Assistant</span>.*?<span data-i18n="t21">Ask BIMA</span>.*?</div>\s*</div>\s*</div>'
+  $anchorMatch = [regex]::Match($content,$anchorPattern)
+  if (-not $anchorMatch.Success) { throw 'STOP: hero AI card anchor mismatch.' }
+  $card = '<div class="hv-float hv-float-3 issue123-dashboard-float"><div class="hv-float-icon">D</div><div><div class="hv-float-title"><span data-i18n="t47">Dashboard Customer Service</span></div><div class="hv-float-sub"><span data-i18n="t50">Pantau performa tim CS secara real-time</span></div></div></div>'
+  $content = $content.Substring(0,$anchorMatch.Index+$anchorMatch.Length) + $card + $content.Substring($anchorMatch.Index+$anchorMatch.Length)
 
   $desktop = '.hv-float-2{right:-20px;bottom:35px;animation-delay:1s}'
   if (([regex]::Matches($content,[regex]::Escape($desktop))).Count -ne 1) { throw 'STOP: desktop CSS anchor mismatch.' }
@@ -43,7 +45,7 @@ try {
   if (([regex]::Matches($content,'issue123-dashboard-float')).Count -ne 1) { throw 'VERIFY FAILED: dashboard visual count.' }
   if (-not $content.Contains('alt="BIMA"')) { throw 'VERIFY FAILED: BIMA avatar.' }
   [System.IO.File]::WriteAllText($Path,$content,[System.Text.UTF8Encoding]::new($true))
-  Write-Host 'PATCH COMPLETE: Issue #123 hero visual triad.' -ForegroundColor Green
+  Write-Host 'PATCH COMPLETE: Issue 123 hero visual triad.' -ForegroundColor Green
   Write-Host 'Website + Ask BIMA + Customer Service Dashboard.' -ForegroundColor Cyan
   git diff --check -- index.html
   git diff --stat -- index.html
