@@ -745,20 +745,28 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
 </style>
 
 
-<style id="issue123-final-approved-hero">
-/* STEP 3 HOTFIX — actual Hero DOM */
-.hero{min-height:auto!important;padding:42px clamp(40px,6vw,112px) 38px!important;display:grid!important;grid-template-columns:minmax(560px,1.08fr) minmax(520px,.92fr)!important;align-items:center!important;gap:clamp(48px,6vw,104px)!important;overflow:hidden!important}
-.hero>div:first-child{min-width:0!important;width:100%!important;max-width:760px!important}
-.hero #heroH1{font-size:clamp(46px,3.35vw,62px)!important;line-height:1.06!important;letter-spacing:-.035em!important;max-width:760px!important;width:100%!important;margin:0 0 18px!important;word-break:normal!important;overflow-wrap:normal!important;white-space:normal!important}
-.hero #heroH1 span{display:inline!important}
-.hero>div:first-child>p{max-width:690px!important;font-size:clamp(17px,1.08vw,20px)!important;line-height:1.6!important}
-.hero-bullets{margin-top:16px!important;gap:6px!important}.hero-actions{margin-top:24px!important}
-.hero>.issue123-approved-hero{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:700px!important;min-width:0!important;height:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0 auto!important}
-.hero .issue123-approved-hero-img{display:block!important;width:100%!important;max-width:700px!important;height:auto!important;margin:0!important;object-fit:contain!important}
-@media(max-width:1180px) and (min-width:901px){.hero{grid-template-columns:minmax(470px,1fr) minmax(420px,.9fr)!important;gap:36px!important;padding-inline:42px!important}.hero #heroH1{font-size:clamp(43px,4.4vw,54px)!important}.hero>.issue123-approved-hero{max-width:560px!important}}
-@media(max-width:900px){.hero{display:flex!important;flex-direction:column!important;padding:32px 20px 40px!important;gap:28px!important}.hero>div:first-child{max-width:none!important}.hero #heroH1{font-size:clamp(38px,10vw,48px)!important;max-width:none!important}.hero>.issue123-approved-hero{max-width:680px!important;width:100%!important;margin:0 auto!important}.hero .issue123-approved-hero-img{width:100%!important;max-width:680px!important}}
+<style id="issue123-step3-final-lock">
+/* STEP 3 FINAL: approved hero only; runtime/other sections preserved. */
+@media (min-width:961px){
+  .hero{padding:28px 0 0!important;overflow:hidden!important}
+  .hero>.wrap,.hero .wrap{display:grid!important;grid-template-columns:minmax(0,48%) minmax(0,52%)!important;gap:30px!important;align-items:center!important;padding-bottom:30px!important}
+  .hero>.wrap>div:first-of-type{min-width:0!important}
+  .hero .badge{display:none!important}
+  .hero h1{font-size:clamp(38px,3.25vw,50px)!important;line-height:1.06!important;letter-spacing:-1.3px!important;margin:0 0 14px!important;max-width:640px!important}
+  .hero p{font-size:15.5px!important;line-height:1.48!important;max-width:620px!important;margin-bottom:15px!important}
+  .hero-vp{gap:5px!important;margin-bottom:17px!important}
+  .hero-vp span{font-size:13px!important}
+  .hero-cta{gap:10px!important}
+  .hero-visual.issue123-approved-hero{min-width:0!important;width:100%!important;margin:0!important;transform:none!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important}
+  .hero-visual.issue123-approved-hero img{display:block!important;width:100%!important;height:auto!important;max-width:100%!important;object-fit:contain!important}
+}
+@media (min-width:1180px) and (max-height:820px){
+  .hero{padding-top:14px!important}.hero h1{font-size:clamp(36px,2.75vw,46px)!important}.hero p{font-size:14.5px!important;line-height:1.4!important}.hero-vp{margin-bottom:12px!important}.hero>.wrap,.hero .wrap{padding-bottom:18px!important}
+}
+@media(max-width:960px){
+  .hero>.wrap,.hero .wrap{grid-template-columns:1fr!important}.hero h1{font-size:clamp(34px,8vw,48px)!important}.hero-visual.issue123-approved-hero{transform:none!important;margin:28px 0 0!important;width:100%!important}.hero-visual.issue123-approved-hero img{width:100%!important;height:auto!important;display:block!important}
+}
 </style>
-
 </head>
 <body>
 <header id="siteHeader">
