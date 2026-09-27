@@ -12,6 +12,7 @@ Working branch: `issue-123-vireqo-commercial-refresh`
 - Do not repeat completed or failed procedures; move to a different recovery path.
 - Do not mix Vireqo/BIMA work with other projects.
 - Update this roadmap immediately when a step is completed.
+- APPROVED HERO IS NOW LOCKED: do not alter Hero copy, proportions, artwork, CTA layout, or desktop composition unless the user explicitly requests a new Hero change.
 
 ## Locked commercial baseline
 Four product cards only:
@@ -25,21 +26,30 @@ Domain is not included. Customer may purchase it independently; if Vireqo assist
 Website scope follows the onboarding form. Two revision rounds are included; additional revisions are charged based on complexity. Seven days of post-go-live support covers defects/support only; new features or design changes are additional work.
 
 ## Implementation checklist
+
+### Phase 0 — Safety / commercial baseline
 - [x] Create isolated working branch from current main.
+- [x] Lock four-product commercial baseline and pricing rules in roadmap.
+- [x] Lock safety rules: preserve BIMA runtime, responsive behavior, client isolation, bilingual copy, and approved BIMA avatar.
+- [x] Lock rule to update roadmap immediately after completed work.
+
+### Phase 1 — Hero / positioning foundation
 - [x] Hero positioning copy baseline added in ID + EN.
 - [x] Refresh hero floating-card copy for Website & Landing Page + AI Client Assistant / Ask BIMA.
 - [x] Replace legacy synthetic Hero illustration with the approved Vireqo artwork containing Website/Landing Page, Ask BIMA/AI Client Assistant, and CS Dashboard.
 - [x] Restore approved desktop Hero proportions: wide readable copy column + balanced artwork column; remove the narrow one-word-per-line regression.
 - [x] Preserve approved mobile breakpoint rules in the Step 3 Hero patch.
 - [x] Preserve runtime anchors for `hamburgerBtn`, `mobileMenu`, `bimaFab`, and `data-i18n` during the Step 3 repair.
-- [x] Limit production Step 3 diff to `index.html` + `assets/vireqo-hero-approved.png`.
-- [x] Merge Step 3 Hero to `main` via PR #11 (`ee7a440`).
-- [x] GitHub Pages production build and deployment for `ee7a440` completed successfully.
-- [ ] Browser visual acceptance of production Hero (desktop + mobile) after cache refresh.
+- [x] Limit Hero production repair to `index.html` / approved Hero asset scope; BIMA runtime and other projects untouched.
+- [x] Restore exact approved Hero lock from saved approved checkpoint after regression.
+- [x] Production Hero desktop visual accepted by user on 27 Sep 2026; this composition is now locked and must not be changed without explicit instruction.
+- [ ] Production Hero mobile visual acceptance.
 - [ ] Verify ID/EN switch interactively in production browser.
 - [ ] Verify mobile hamburger interactively in production browser.
 - [ ] Verify Ask BIMA interactively after Hero deployment.
-- [ ] STEP 3 COMPLETE — check only after the four interactive acceptance items above pass.
+- [ ] PHASE 1 COMPLETE — check only after the four interactive acceptance items above pass.
+
+### Phase 2 — Four-product commercial presentation
 - [ ] Replace legacy six-service presentation with exactly four product cards.
 - [ ] Add final baseline pricing and clear inclusions/exclusions to product cards.
 - [ ] Add Website + AI Assistant bundle pricing logic (website fee + selected AI subscription).
@@ -47,24 +57,28 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [ ] Add two-revision policy.
 - [ ] Add seven-day post-go-live support scope and additional-work boundary.
 - [ ] Add CS Dashboard external database/hosting cost disclosure.
+
+### Phase 3 — FAQ / legal alignment
 - [ ] Add bilingual FAQ (ID + EN).
 - [ ] Align cancellation/refund wording with existing legal pages; do not invent conflicting policy.
 - [ ] Align Privacy/Terms with existing legal pages and commercial scope.
+
+### Phase 4 — BIMA commercial knowledge
 - [ ] Update BIMA product knowledge only after commercial catalog is finalized.
 - [ ] Remove legacy BIMA knowledge/routes for Training CS, CS staffing/old consulting, and SEO where they conflict with the four-product catalog.
+
+### Phase 5 — SEO / routing / regression
 - [ ] Update SEO/meta/schema/customer-facing positioning in ID + EN.
 - [ ] Align CTA/service routing with the four-product catalog.
 - [ ] Regression: existing legal navigation works.
 - [ ] Final commercial-refresh diff review before final merge.
 
-## Step 3 production checkpoint — 27 Sep 2026
-- Approved Hero source checkpoint: `7105436`.
-- Deterministic Hero proportion repair: `f8d4eed`.
-- Production PR: #11.
-- Production squash commit: `ee7a4405481b203a4f2c22a4d927252947891891`.
-- Production Pages build/deploy: successful.
-- Temporary repair workflow and patch artifact were removed before the production diff was merged.
-- Remaining Step 3 work is interactive browser acceptance only; do not start Step 4 before it passes.
+## Hero production checkpoint — 27 Sep 2026
+- Current approved production restore commit: `523aa4b4b6eb2e5db5b1a4ac8c9349ea1ffda241`.
+- GitHub Pages build/deploy for this commit: successful.
+- Desktop Hero visually accepted by user after production refresh.
+- Approved composition is locked; do not touch it in subsequent phases.
+- Remaining Phase 1 work is mobile + interactive acceptance only; do not begin Phase 2 until Phase 1 is complete.
 
 ## Current source audit findings
-Legacy positioning still exists below the Hero, including six-service wording, Customer Service Training, SEO consulting, old CS/team wording, old How It Works copy, footer positioning, and BIMA service mappings. These belong to later roadmap steps and were not mixed into the Step 3 Hero change.
+Legacy positioning still exists below the Hero, including six-service wording, Customer Service Training, SEO consulting, old CS/team wording, old How It Works copy, footer positioning, and BIMA service mappings. These belong to later roadmap phases and must not be mixed into the locked Hero.
