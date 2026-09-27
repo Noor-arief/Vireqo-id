@@ -83,6 +83,6 @@ jobs:
             await mf.click(); await m.waitForTimeout(300); assert(await m.locator('#bimaPanel').isVisible(),'mobile BIMA panel did not open');
             console.log('PASS: mobile hero + ID/EN + hamburger + product cards + product CTA + Ask BIMA');
             await browser.close();
-          })().catch(e=>{console.error(e);process.exit(1)});
+          })().catch(e=>{console.error(`::error title=Production acceptance failed::${String(e && e.stack || e).replace(/%/g,'%25').replace(/\r/g,'%0D').replace(/\n/g,'%0A')}`);console.error(e);process.exit(1)});
           JS
           node phase1-acceptance.js
