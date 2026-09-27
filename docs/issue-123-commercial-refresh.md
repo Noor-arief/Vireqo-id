@@ -9,6 +9,7 @@ Working branch: `issue-123-vireqo-commercial-refresh`
 - Customer-facing copy must stay synchronized in Indonesian and English.
 - Client isolation remains hard: no cross-client knowledge, session, credential, or data sharing.
 - Use the locked BIMA avatar asset already present in the product; do not generate/substitute another BIMA face.
+- Never reconstruct or replace the large `index.html` from truncated connector output. Large-file changes must come from the complete source and pass a narrow diff check.
 
 ## Locked commercial baseline
 Four product cards only:
@@ -25,8 +26,9 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [x] Create isolated working branch from current main.
 - [x] Hero positioning copy baseline added in ID + EN on main before branch isolation.
 - [ ] Remove accidental UTF-8 BOM introduced by the hero-copy PowerShell write.
-- [ ] Refresh hero illustration content while preserving the existing HTML/CSS animation structure.
-- [ ] Hero visual represents Website + BIMA/AI Client Assistant + CS Dashboard.
+- [x] Refresh hero floating-card copy while preserving the existing HTML/CSS animation structure.
+- [x] Hero floating cards now represent Website & Landing Page + AI Client Assistant / Ask BIMA.
+- [ ] Complete hero illustration refresh to include the locked BIMA avatar and CS Dashboard representation.
 - [ ] Use the existing locked BIMA avatar asset only.
 - [ ] Replace legacy six-service presentation with exactly four product cards.
 - [ ] Add final baseline pricing and clear inclusions/exclusions to product cards.
@@ -48,6 +50,12 @@ Website scope follows the onboarding form. Two revision rounds are included; add
 - [ ] Regression: existing legal navigation works.
 - [ ] Final diff review before merge.
 - [ ] Explicit approval before merge to `main`.
+
+## Verified checkpoint — 27 Sep 2026
+- Hero visual-copy commit: `dba5199`.
+- Compared against safe head `487f1cd`: exactly one file changed (`index.html`), 3 additions and 3 deletions.
+- Local `git diff --check` returned clean.
+- No merge to `main` performed.
 
 ## Current source audit findings
 Legacy positioning still exists in the current source, including six-service wording, Customer Service Training, SEO consulting, old CS/team wording, old How It Works copy, footer positioning, and BIMA service mappings. These must be migrated deliberately rather than globally replaced.
