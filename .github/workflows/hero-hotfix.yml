@@ -1,0 +1,45 @@
+name: Hero Layout Hotfix
+on:
+  push:
+    branches: [hotfix-step3-hero-layout-2]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8-sig')
+          start=s.find('<style id="issue123-final-approved-hero">')
+          end=s.find('</style>',start)
+          if start<0 or end<0: raise SystemExit('hero override missing')
+          end+=8
+          css='''<style id="issue123-final-approved-hero">
+/* STEP 3 HOTFIX — selectors match actual Hero DOM */
+.hero{min-height:auto!important;padding:42px clamp(40px,6vw,112px) 38px!important;display:grid!important;grid-template-columns:minmax(560px,1.08fr) minmax(520px,.92fr)!important;align-items:center!important;gap:clamp(48px,6vw,104px)!important;overflow:hidden!important}
+.hero>.hero-copy,.hero>div:first-child{min-width:0!important;width:100%!important;max-width:760px!important}
+.hero h1#heroH1,.hero #heroH1{font-size:clamp(46px,3.35vw,62px)!important;line-height:1.06!important;letter-spacing:-.035em!important;max-width:760px!important;width:100%!important;margin:0 0 18px!important;word-break:normal!important;overflow-wrap:normal!important;white-space:normal!important}
+.hero #heroH1 span{display:inline!important}
+.hero>.hero-copy>p,.hero>div:first-child>p{max-width:690px!important;font-size:clamp(17px,1.08vw,20px)!important;line-height:1.6!important}
+.hero-bullets{margin-top:16px!important;gap:6px!important}.hero-actions{margin-top:24px!important}
+.hero>.issue123-approved-hero{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:700px!important;min-width:0!important;height:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0 auto!important}
+.hero .issue123-approved-hero-img{display:block!important;width:100%!important;max-width:700px!important;height:auto!important;margin:0!important;object-fit:contain!important}
+@media(max-width:1180px) and (min-width:901px){.hero{grid-template-columns:minmax(470px,1fr) minmax(420px,.9fr)!important;gap:36px!important;padding-inline:42px!important}.hero h1#heroH1,.hero #heroH1{font-size:clamp(43px,4.4vw,54px)!important}.hero>.issue123-approved-hero{max-width:560px!important}}
+@media(max-width:900px){.hero{display:flex!important;flex-direction:column!important;padding:32px 20px 40px!important;gap:28px!important}.hero>.hero-copy,.hero>div:first-child{max-width:none!important}.hero h1#heroH1,.hero #heroH1{font-size:clamp(38px,10vw,48px)!important;max-width:none!important}.hero>.issue123-approved-hero{max-width:680px!important;width:100%!important;margin:0 auto!important}.hero .issue123-approved-hero-img{width:100%!important;max-width:680px!important}}
+</style>'''
+          s=s[:start]+css+s[end:]
+          for token in ['assets/vireqo-hero-approved.png','hamburgerBtn','mobileMenu','bimaFab','data-i18n']:
+            if token not in s: raise SystemExit('guard missing '+token)
+          p.write_text(s,encoding='utf-8',newline='')
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --check
+          git commit -m "fix: correct Step 3 hero desktop layout"
+          git push
