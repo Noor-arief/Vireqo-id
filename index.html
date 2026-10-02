@@ -1681,6 +1681,7 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
         /(^|\s)wa(\s|$)/.test(normalizedUserMessage);
 
       var shouldShowWhatsApp =
+        data.handover_ready===true ||
         userRequestedWhatsApp ||
         normalizedAnswer.includes('lanjut via whatsapp') ||
         normalizedAnswer.includes('lanjut melalui whatsapp') ||
