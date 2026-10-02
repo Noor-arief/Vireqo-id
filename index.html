@@ -1504,7 +1504,13 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
       if(healthFailureCount>=HEALTH_FAILURE_THRESHOLD)applyBackendStatus(false);
     }
   }
-  function scrollChat(){if(body)setTimeout(function(){body.scrollTop=body.scrollHeight;},0);}
+  function scrollChat(){
+    if(!body)return;
+    requestAnimationFrame(function(){
+      body.scrollTop=body.scrollHeight;
+      setTimeout(function(){body.scrollTop=body.scrollHeight;},80);
+    });
+  }
   function setBusy(state){busy=state;input.disabled=state;sendBtn.disabled=state;}
   function clearIdleTimers(){if(idleReminderTimer){clearTimeout(idleReminderTimer);idleReminderTimer=null;}if(autoCloseTimer){clearTimeout(autoCloseTimer);autoCloseTimer=null;}}
   function clearHandoverTimer(){if(handoverCloseTimer){clearTimeout(handoverCloseTimer);handoverCloseTimer=null;}}
@@ -1680,13 +1686,17 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
         normalizedUserMessage.includes('whatsapp') ||
         /(^|\s)wa(\s|$)/.test(normalizedUserMessage);
 
+      var backendHandoverReady = data.handover_ready === true;
       var shouldShowWhatsApp =
+        backendHandoverReady ||
         userRequestedWhatsApp ||
         normalizedAnswer.includes('lanjut via whatsapp') ||
         normalizedAnswer.includes('lanjut melalui whatsapp') ||
         normalizedAnswer.includes('lanjut ke whatsapp') ||
         normalizedAnswer.includes('ringkasan kebutuhan anda sudah saya siapkan') ||
         (normalizedAnswer.includes('menekan tombol') && normalizedAnswer.includes('whatsapp')) ||
+        (normalizedAnswer.includes('klik tombol') && normalizedAnswer.includes('whatsapp')) ||
+        (normalizedAnswer.includes('tombol whatsapp vireqo')) ||
         normalizedAnswer.includes('continue via whatsapp') ||
         normalizedAnswer.includes('continue through whatsapp');
 
@@ -1712,6 +1722,11 @@ footer{background:#F9FBFC;border-color:#E2EAEF;padding-top:58px}
         handover.classList.add('show');
         handover.setAttribute('aria-hidden','false');
         scrollChat();
+        setTimeout(function(){
+          if(body && handover.classList.contains('show')){
+            body.scrollTop=body.scrollHeight;
+          }
+        },160);
       }
 
       if(!sessionClosed){
